@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>脑力基线实验室 BrainLab</title>
+<style>
+:root{--p:#3a6ea5;--bg:#f4f6f9;--card:#ffffff;--tx:#2b3a4a;--mut:#7f8fa0;--ln:#e4e9f0;--ok:#27ae60;--warn:#e67e22;--bad:#c0392b;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;}
+body{background:var(--bg);color:var(--tx);font-size:15px;line-height:1.6;}
+header{background:var(--card);border-bottom:1px solid var(--ln);padding:10px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:10;}
+.logo{font-weight:700;font-size:18px;color:var(--p);}
+.logo small{color:var(--mut);font-weight:400;margin-left:6px;}
+.hstatus{font-size:13px;color:var(--mut);}
+.chip{display:inline-block;padding:1px 9px;border-radius:12px;font-size:12px;margin-left:8px;background:#eef3f8;color:var(--p);}
+.chip.done{background:#e8f7ef;color:var(--ok);}
+.wrap{max-width:1040px;margin:0 auto;padding:14px;}
+nav{display:flex;gap:6px;margin:12px 0;}
+.navbtn{flex:1;padding:9px 4px;border:1px solid var(--ln);background:var(--card);border-radius:8px;cursor:pointer;font-size:14px;color:var(--mut);}
+.navbtn.active{background:var(--p);border-color:var(--p);color:#fff;font-weight:600;}
+.page{display:none;}
+.page.active{display:block;}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:16px 18px;margin-bottom:14px;}
+.card h2{font-size:17px;margin-bottom:8px;color:var(--p);}
+.card h3{font-size:16px;margin-bottom:6px;}
+.desc{color:var(--mut);font-size:14px;}
+.hint{color:var(--mut);font-size:12.5px;margin-top:8px;}
+.rowline{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px;}
+.btn{padding:8px 16px;border-radius:8px;border:1px solid var(--p);background:#fff;color:var(--p);cursor:pointer;font-size:14px;}
+.btn.primary{background:var(--p);color:#fff;}
+.btn.sm{padding:4px 10px;font-size:13px;}
+.btn.danger{border-color:var(--bad);color:var(--bad);}
+.btn:disabled{opacity:.5;cursor:default;}
+label.fld{display:block;margin:8px 0 2px;font-size:13.5px;color:var(--mut);}
+input[type=text],input[type=time],input[type=date],input[type=number],select,textarea{padding:7px 9px;border:1px solid var(--ln);border-radius:8px;font-size:14px;background:#fff;color:var(--tx);width:100%;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 16px;}
+@media(max-width:640px){.grid2,.grid3{grid-template-columns:1fr;}}
+.stars{display:flex;gap:6px;flex-wrap:wrap;}
+.stars .st{cursor:pointer;font-size:22px;color:#d5dde6;user-select:none;padding:0 2px;}
+.stars .st.on{color:#f5b301;}
+.habits{display:flex;flex-wrap:wrap;gap:8px;}
+.habits .hb{display:flex;align-items:center;gap:6px;background:#eef3f8;border-radius:20px;padding:5px 12px;cursor:pointer;font-size:13.5px;color:var(--p);}
+.hb input{accent-color:var(--p);}
+.capbtns{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.cap{font-size:15px;padding:8px 14px;border-radius:10px;border:1px solid var(--ln);background:#fff;cursor:pointer;}
+.cap.hit{border-color:var(--ok);color:var(--ok);}
+.cap.miss{border-color:var(--bad);color:var(--bad);}
+.capnum{font-size:22px;font-weight:700;min-width:40px;display:inline-block;text-align:center;}
+.test-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 4px;border-bottom:1px dashed var(--ln);}
+.test-item:last-child{border-bottom:none;}
+.test-item b{font-size:15px;}
+.dur{color:var(--mut);font-size:12.5px;margin-left:8px;font-weight:400;}
+.res{color:var(--p);font-size:13.5px;text-align:right;white-space:nowrap;}
+.intro{text-align:center;padding:26px 18px;}
+.intro .btn{margin-top:14px;font-size:16px;padding:10px 26px;}
+.srtbox{width:220px;height:220px;border-radius:14px;margin:20px auto;display:flex;align-items:center;justify-content:center;font-size:19px;color:#fff;cursor:pointer;user-select:none;text-align:center;}
+.crtsq{width:130px;height:130px;border-radius:12px;margin:14px auto;border:2px solid var(--ln);}
+.btnrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:10px 0;}
+.crtbtn{padding:10px 22px;font-size:16px;border-radius:10px;border:2px solid var(--ln);background:#fff;cursor:pointer;}
+.bigchar{font-size:84px;font-weight:700;text-align:center;margin:18px 0;}
+.nbletter{height:110px;font-size:80px;font-weight:700;text-align:center;line-height:110px;}
+.nbwrap{text-align:center;}
+.nbcounter{color:var(--mut);font-size:13px;}
+.nbfb{height:26px;font-size:15px;color:var(--mut);}
+.diginput{font-size:24px;letter-spacing:6px;text-align:center;max-width:260px;margin:10px auto;display:block;}
+.cgrid{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;margin-top:10px;}
+@media(max-width:700px){.cgrid{grid-template-columns:repeat(12,1fr);}}
+.ccell{aspect-ratio:1/1;font-size:15px;border:1px solid var(--ln);background:#fff;border-radius:4px;cursor:pointer;line-height:1;padding:0;}
+.ccell.hit{background:var(--ok);border-color:var(--ok);color:#fff;}
+.ccell.miss{background:var(--bad);border-color:var(--bad);color:#fff;}
+.targetbig{font-size:15px;}
+.tb{color:var(--p);font-size:20px;}
+.mindcircle{width:190px;height:190px;border-radius:50%;background:radial-gradient(circle,#dbe7f3,var(--p));margin:16px auto;animation:breathe 10s ease-in-out infinite paused;}
+.mindcircle.run{animation-play-state:running;}
+@keyframes breathe{0%,100%{transform:scale(.86);}50%{transform:scale(1.05);}}
+.mindtime{font-size:40px;font-weight:700;text-align:center;letter-spacing:2px;color:var(--p);}
+canvas{max-width:100%;background:#fff;border:1px solid var(--ln);border-radius:10px;}
+.chartblock{margin:12px 0;}
+.chartblock h4{font-size:14px;margin-bottom:4px;font-weight:600;}
+.adh{display:grid;grid-template-columns:repeat(28,1fr);gap:3px;}
+@media(max-width:700px){.adh{grid-template-columns:repeat(14,1fr);}}
+.adhcell{aspect-ratio:1;border-radius:3px;background:#edf1f6;}
+.adhcell.log{background:#bcd6ee;}
+.adhcell.full{background:var(--ok);}
+table.corr{width:100%;border-collapse:collapse;font-size:13.5px;}
+table.corr th,table.corr td{border-bottom:1px solid var(--ln);padding:6px 8px;text-align:center;}
+table.corr th{color:var(--mut);font-weight:600;background:#f7f9fc;}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#33465a;color:#fff;padding:9px 20px;border-radius:24px;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:99;}
+.toast.show{opacity:.95;}
+.bigmsg{text-align:center;padding:40px 0;font-size:20px;color:var(--ok);font-weight:600;}
+.resline{text-align:center;color:var(--p);margin-top:6px;}
+ul.steps{padding-left:20px;font-size:14px;}
+ul.steps li{margin:4px 0;}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">🧠 脑力基线实验室<small>BrainLab · n=1</small></div>
+ <div class="hstatus"><span id="hdr-date"></span><span class="chip" id="hdr-status">⏳ 今日测试未完成</span><span class="chip" id="hdr-streak">🔥 连续 0 天</span></div>
+</header>
+<div class="wrap">
+<nav>
+ <button class="navbtn active" data-tab="daily" onclick="showTab('daily')">今日打卡</button>
+ <button class="navbtn" data-tab="test" onclick="showTab('test')">认知测试</button>
+ <button class="navbtn" data-tab="mind" onclick="showTab('mind')">正念</button>
+ <button class="navbtn" data-tab="trend" onclick="showTab('trend')">趋势</button>
+ <button class="navbtn" data-tab="data" onclick="showTab('data')">数据</button>
+</nav>
+
+<div id="page-daily" class="page active">
+ <div class="card">
+  <div class="rowline"><h2>今日打卡</h2><input type="date" id="dl-date" style="max-width:170px" onchange="loadDailyForm()"></div>
+  <p class="desc" id="hint-testtime"></p>
+  <div class="grid3">
+   <div><label class="fld">入睡时间（昨晚）</label><input type="time" id="dl-bed" onchange="updateDur()"></div>
+   <div><label class="fld">起床时间</label><input type="time" id="dl-wake" onchange="updateDur()"></div>
+   <div><label class="fld">夜间醒来次数</label><input type="number" id="dl-nw" min="0" max="10" value="0"></div>
+  </div>
+  <div class="grid3" style="margin-top:10px">
+   <div><label class="fld">睡眠时长</label><div id="dl-dur" style="font-size:24px;font-weight:700;color:var(--p)">—</div></div>
+   <div><label class="fld">睡眠质量（1–5）</label><div class="stars" id="dl-qual"></div></div>
+   <div><label class="fld">能量（1–5）</label><div class="stars" id="dl-energy"></div></div>
+  </div>
+  <div class="grid2" style="margin-top:10px">
+   <div><label class="fld">情绪（1–5）</label><div class="stars" id="dl-mood"></div></div>
+   <div><label class="fld">压力（1–5）</label><div class="stars" id="dl-stress"></div></div>
+  </div>
+ </div>
+ <div class="card">
+  <h2>习惯打卡</h2>
+  <div class="habits">
+   <label class="hb"><input type="checkbox" id="hb-supp">午餐补剂（VD3+叶酸+VC）</label>
+   <label class="hb"><input type="checkbox" id="hb-mind">正念 10min</label>
+   <label class="hb"><input type="checkbox" id="hb-ex">运动</label>
+   <label class="hb"><input type="checkbox" id="hb-cards">背卡</label>
+  </div>
+  <div class="grid3" style="margin-top:10px">
+   <div><label class="fld">运动类型</label><input type="text" id="ex-type" placeholder="游泳/慢跑/力量/羽毛球…"></div>
+   <div><label class="fld">时长（分钟）</label><input type="number" id="ex-min" min="0"></div>
+   <div><label class="fld">平均心率</label><input type="number" id="ex-hr" min="0" placeholder="手环数据，可留空"></div>
+  </div>
+ </div>
+ <div class="card">
+  <h2>前瞻记忆 · 捕捉计数</h2>
+  <p class="desc">10秒内记进系统的"待会儿要做"＝捕捉成功；事后靠回忆发现的漏项＝遗漏。只记任务类，不记"随手就回"的事。</p>
+  <div class="capbtns" style="margin-top:10px">
+   <button class="cap hit" onclick="capDelta('hit',1)">捕捉成功 +1</button>
+   <span class="capnum" id="cap-hit-n" style="color:var(--ok)">0</span>
+   <button class="cap hit" style="padding:4px 8px" onclick="capDelta('hit',-1)">−1</button>
+   <button class="cap miss" onclick="capDelta('miss',1)">遗漏发现 +1</button>
+   <span class="capnum" id="cap-miss-n" style="color:var(--bad)">0</span>
+   <button class="cap miss" style="padding:4px 8px" onclick="capDelta('miss',-1)">−1</button>
+  </div>
+ </div>
+ <div class="card">
+  <div class="rowline"><h2>备注</h2><button class="btn primary sm" onclick="saveDaily()">保存今日打卡</button></div>
+  <textarea id="dl-notes" rows="2" placeholder="任何想记录的：昨晚多梦、今天开会走神严重、午饭后犯困……"></textarea>
+ </div>
+</div>
+<div id="page-test" class="page">
+ <div class="card">
+  <div class="rowline"><h2>今日认知测试</h2><span class="desc" id="test-progress"></span></div>
+  <p class="desc" id="battery-note">每日4项约5分钟；周一自动加"选择反应时＋Stroop"。</p>
+  <div id="battery-list"></div>
+  <div class="btnrow" style="justify-content:flex-start">
+   <button class="btn primary" id="btn-start-test" onclick="startBattery()">开始今日测试</button>
+   <button class="btn" id="btn-retest" style="display:none" onclick="startBattery()">重新测试（覆盖今日）</button>
+  </div>
+  <p class="hint">规约：每天固定时间做一次、顺序固定、设备尽量一致。前5–7次的成绩上升主要是练习效应，趋势分析从第8天起看。</p>
+ </div>
+ <div id="test-stage"></div>
+</div>
+
+<div id="page-mind" class="page">
+ <div class="card">
+  <h2>正念 · 专注呼吸 10 分钟</h2>
+  <ul class="steps">
+   <li>坐在椅子上，背直但放松，双脚踩地，手放大腿，闭眼或垂帘。</li>
+   <li>注意力放在呼吸的一个点上：鼻端气流，或腹部起伏。</li>
+   <li>从1数到10循环计数；数丢了就回到1。</li>
+   <li><b>发现走神 → 不批评，心里轻轻标一个"想"字 → 回到呼吸。</b>每发现一次走神并拉回＝一次有效训练量。</li>
+   <li>结束缓30秒再睁眼。午后犯困就先散步再做，或改垂帘微睁眼。</li>
+  </ul>
+ </div>
+ <div class="card" style="text-align:center">
+  <div class="mindcircle" id="mind-circle"></div>
+  <div class="mindtime" id="mind-time">10:00</div>
+  <div class="rowline" style="justify-content:center;margin-top:12px">
+   <select id="mind-min" style="max-width:110px" onchange="mindPreset()">
+    <option value="600" selected>10 分钟</option>
+    <option value="300">5 分钟</option>
+    <option value="900">15 分钟</option>
+   </select>
+   <label class="hb"><input type="checkbox" id="mind-bell" checked> 每2.5分钟一声轻钟</label>
+  </div>
+  <div class="btnrow" style="margin-top:14px">
+   <button class="btn primary" id="mind-start" onclick="startMind()">开始</button>
+   <button class="btn" onclick="stopMind(false)">停止/重置</button>
+  </div>
+  <p class="hint">完成后自动勾选今日打卡中的"正念 10min"。建议放在午饭后（先散步）或睡前1小时。</p>
+ </div>
+</div>
+<div id="page-trend" class="page">
+ <div class="card"><h2>依从性 · 最近8周</h2><p class="desc">绿＝完成认知测试；浅蓝＝有打卡记录；灰＝无数据。先保依从性，再谈数据。</p><div class="adh" id="adh-grid" style="margin-top:10px"></div></div>
+ <div class="card"><h2>趋势曲线</h2><p class="desc">实线＝当日值，黄色虚线＝7日滚动均值。单日波动是噪声，看虚线。</p>
+  <div class="chartblock"><h4>睡眠时长（小时）</h4><canvas id="c-sleepDur" width="980" height="200"></canvas></div>
+  <div class="chartblock"><h4>睡眠质量（1–5）</h4><canvas id="c-sleepQual" width="980" height="200"></canvas></div>
+  <div class="chartblock"><h4>简单反应时中位（ms，越低越好）</h4><canvas id="c-srt" width="980" height="200"></canvas></div>
+  <div class="chartblock"><h4>2-back 命中率（%，越高越好）</h4><canvas id="c-nback" width="980" height="200"></canvas></div>
+  <div class="chartblock"><h4>数字广度（位，实线＝顺背，绿线＝倒背）</h4><canvas id="c-digit" width="980" height="200"></canvas></div>
+  <div class="chartblock"><h4>划消找到率（%，找到/28个目标）</h4><canvas id="c-cancel" width="980" height="200"></canvas></div>
+  <div class="chartblock"><h4>捕捉率（%，捕捉/(捕捉+遗漏)）</h4><canvas id="c-cap" width="980" height="200"></canvas></div>
+ </div>
+ <div class="card"><h2>睡眠 → 次日认知 相关性（Pearson r）</h2>
+  <p class="desc">昨晚睡眠（时长/质量） vs 今日各测试成绩。≥20个数据点（约4周）后 r 才值得看；前7天的练习效应会稀释相关。</p>
+  <div id="corr-table" style="margin-top:10px"></div>
+ </div>
+</div>
+
+<div id="page-data" class="page">
+ <div class="card"><h2>导出 / 备份</h2>
+  <p class="desc">数据只存在这台电脑、这个浏览器的 localStorage 里（不要用隐私/无痕模式打开本页）。请每周导出一次备份——浏览器清理、换电脑、换浏览器都会丢数据。</p>
+  <div class="btnrow" style="justify-content:flex-start;margin-top:10px">
+   <button class="btn primary" onclick="exportCSV()">导出 CSV</button>
+   <button class="btn" onclick="exportJSON()">导出 JSON</button>
+   <button class="btn" onclick="document.getElementById('import-file').click()">导入 JSON</button>
+   <input type="file" id="import-file" accept=".json,application/json" style="display:none" onchange="importJSON(this)">
+  </div>
+ </div>
+ <div class="card"><h2>设置</h2>
+  <div class="grid2">
+   <div><label class="fld">建议测试时间（仅作提醒显示）</label><input type="time" id="set-testtime" onchange="saveSettings()"></div>
+  </div>
+ </div>
+ <div class="card"><h2>危险区</h2>
+  <p class="desc">清空全部本地数据，不可恢复（请先导出备份）。</p>
+  <button class="btn danger" style="margin-top:8px" onclick="clearAll()">清空全部数据</button>
+ </div>
+ <div class="card"><h2>使用说明</h2>
+  <ul class="steps">
+   <li><b>每天一次</b>：上午固定时间（建议9:00美式之后、正式工作前）完成"认知测试"4项（周一6项）。</li>
+   <li>测试后回"今日打卡"补睡眠/情绪/习惯（也可随时填，日期可选回去补记）。</li>
+   <li>正念从"正念"标签计时，完成自动打卡。</li>
+   <li>每周末看"趋势"：先看依从性，再看7日均线，4周后再看相关性表。</li>
+   <li>解读纪律：单日波动是噪声；别用单次成绩评判自己；前后对比要看同一设备、同一时段。</li>
+  </ul>
+ </div>
+</div>
+</div><!-- /wrap -->
+<div class="toast" id="toast"></div>
+<script>
+'use strict';
+/* ============ 数据层 ============ */
+const LS_KEY='brainlab_data_v1';
+let DB=loadDB();
+let RUN={active:false,idx:0,list:[],results:{}};
+let TIMERS=[],INTER=[],currentKeyHandler=null;
+function loadDB(){try{const d=JSON.parse(localStorage.getItem(LS_KEY));if(d&&d.days)return d;}catch(e){}return{days:{},settings:{testTime:'09:30'}};}
+function saveDB(){try{localStorage.setItem(LS_KEY,JSON.stringify(DB));}catch(e){alert('保存失败：浏览器存储不可用（是否在无痕模式？）');}}
+/* ============ 工具 ============ */
+function $(id){return document.getElementById(id);}
+function el(t,c,h){const e=document.createElement(t);if(c)e.className=c;if(h!==undefined)e.innerHTML=h;return e;}
+function fmtDate(d){const p=n=>('0'+n).slice(-2);return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());}
+function todayKey(){return fmtDate(new Date());}
+function dayRec(k){if(!DB.days[k])DB.days[k]={};return DB.days[k];}
+function getRec(k){return DB.days[k]||null;}
+function prevDay(k){const d=new Date(k+'T12:00:00');d.setDate(d.getDate()-1);return fmtDate(d);}
+function median(a){const b=[...a].sort((x,y)=>x-y),n=b.length;return n?(n%2?b[(n-1)/2]:(b[n/2-1]+b[n/2])/2):null;}
+function mean(a){return a.length?a.reduce((s,v)=>s+v,0)/a.length:null;}
+function sd(a){if(a.length<2)return 0;const m=mean(a);return Math.sqrt(a.reduce((s,v)=>s+(v-m)*(v-m),0)/(a.length-1));}
+function pearson(xs,ys){const n=xs.length;if(n<3)return null;const mx=mean(xs),my=mean(ys);let nu=0,dx=0,dy=0;for(let i=0;i<n;i++){nu+=(xs[i]-mx)*(ys[i]-my);dx+=(xs[i]-mx)*(xs[i]-mx);dy+=(ys[i]-my)*(ys[i]-my);}const de=Math.sqrt(dx*dy);return de?nu/de:0;}
+function randInt(a,b){return a+Math.floor(Math.random()*(b-a+1));}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function later(fn,ms){const t=setTimeout(fn,ms);TIMERS.push(t);return t;}
+function clearAllTimers(){TIMERS.forEach(clearTimeout);INTER.forEach(clearInterval);TIMERS=[];INTER=[];}
+let AC=null;
+function ding(n){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();for(let i=0;i<n;i++){const t=AC.currentTime+i*0.6,o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=784;g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.22,t+0.03);g.gain.exponentialRampToValueAtTime(0.0001,t+0.6);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+0.7);}}catch(e){}}
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),1800);}
+/* ============ 导航 ============ */
+function showTab(name){
+ if(RUN.active&&name!=='test'){clearAllTimers();RUN.active=false;currentKeyHandler=null;$('test-stage').innerHTML='';}
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ $('page-'+name).classList.add('active');
+ document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));
+ if(name==='daily')loadDailyForm();
+ if(name==='test')renderBattery();
+ if(name==='trend')renderTrends();
+ if(name==='mind')mindPreset();
+ if(name==='data')$('set-testtime').value=DB.settings.testTime||'09:30';
+}
+/* ============ 头部/杂项 ============ */
+function durHours(bed,wake){if(!bed||!wake)return null;const p=s=>s.split(':').map(Number);const [bh,bm]=p(bed),[wh,wm]=p(wake);let m=(wh*60+wm)-(bh*60+bm);if(m<=0)m+=1440;return +(m/60).toFixed(2);}
+function calcStreak(){let s=0,d=new Date();for(;;){const r=getRec(fmtDate(d));if(r&&r.tests&&r.tests.testDone){s++;d.setDate(d.getDate()-1);}else break;}return s;}
+function updateHeader(){
+ $('hdr-date').textContent=new Date().toLocaleDateString('zh-CN');
+ const r=getRec(todayKey());const done=r&&r.tests&&r.tests.testDone;
+ const st=$('hdr-status');st.textContent=done?'✅ 今日测试已完成':'⏳ 今日测试未完成';st.classList.toggle('done',!!done);
+ $('hdr-streak').textContent='🔥 连续 '+calcStreak()+' 天';
+ const tt=DB.settings.testTime||'09:30';const now=new Date();const curm=now.getHours()*60+now.getMinutes();
+ const pm=Number(tt.split(':')[0])*60+Number(tt.split(':')[1]);
+ const late=!done&&curm>pm;
+ $('hint-testtime').textContent='建议在 '+tt+' 前完成认知测试'+(late?'（今天已过建议时间，还没做哦）':'');
+}
+/* ============ 星级组件 ============ */
+function buildStars(id){const box=$(id);box.innerHTML='';for(let i=1;i<=5;i++){const s=el('span','st','★');s.onclick=()=>setStars(box,i);box.appendChild(s);}}
+function setStars(box,v){box.dataset.v=v;[...box.children].forEach((c,i)=>c.classList.toggle('on',i<v));}
+function starsVal(id){const v=$(id).dataset.v;return v?Number(v):0;}
+/* ============ 今日打卡 ============ */
+function loadDailyForm(){
+ const key=$('dl-date').value||todayKey();const r=getRec(key)||{};
+ $('dl-bed').value=r.sleep?r.sleep.bed||'':'';$('dl-wake').value=r.sleep?r.sleep.wake||'':'';
+ $('dl-nw').value=r.sleep?(r.sleep.nightWake!=null?r.sleep.nightWake:0):0;
+ setStars($('dl-qual'),r.sleep?r.sleep.quality||0:0);
+ setStars($('dl-energy'),r.mood?r.mood.energy||0:0);
+ setStars($('dl-mood'),r.mood?r.mood.mood||0:0);
+ setStars($('dl-stress'),r.mood?r.mood.stress||0:0);
+ const h=r.habits||{};
+ $('hb-supp').checked=!!h.supp;$('hb-mind').checked=!!h.mind;$('hb-ex').checked=!!h.ex;$('hb-cards').checked=!!h.cards;
+ const ex=r.exercise||{};
+ $('ex-type').value=ex.type||'';$('ex-min').value=ex.min!=null&&ex.min!==0?ex.min:'';$('ex-hr').value=ex.hr!=null&&ex.hr!==0?ex.hr:'';
+ $('dl-notes').value=r.notes||'';
+ renderCapture();updateDur();
+}
+function updateDur(){const v=durHours($('dl-bed').value,$('dl-wake').value);$('dl-dur').textContent=(v===null||v===undefined)?'—':v+' h';}
+function saveDaily(){
+ const key=$('dl-date').value||todayKey();const rec=dayRec(key);
+ rec.sleep={bed:$('dl-bed').value,wake:$('dl-wake').value,nightWake:Number($('dl-nw').value||0),quality:starsVal('dl-qual')};
+ rec.mood={energy:starsVal('dl-energy'),mood:starsVal('dl-mood'),stress:starsVal('dl-stress')};
+ rec.habits={supp:$('hb-supp').checked,mind:$('hb-mind').checked,ex:$('hb-ex').checked,cards:$('hb-cards').checked};
+ rec.exercise={type:$('ex-type').value.trim(),min:Number($('ex-min').value||0),hr:Number($('ex-hr').value||0)||null};
+ rec.notes=$('dl-notes').value.trim();
+ saveDB();updateHeader();toast('已保存 '+key);
+}
+function capDelta(k,d){
+ const key=$('dl-date').value||todayKey();const rec=dayRec(key);
+ rec.capture=rec.capture||{hit:0,miss:0};
+ rec.capture[k]=Math.max(0,(rec.capture[k]||0)+d);
+ saveDB();renderCapture();
+}
+function renderCapture(){
+ const key=$('dl-date').value||todayKey();const r=getRec(key);const c=(r&&r.capture)||{hit:0,miss:0};
+ $('cap-hit-n').textContent=c.hit||0;$('cap-miss-n').textContent=c.miss||0;
+}
+/* ============ 认知测试框架 ============ */
+const TESTDEFS={
+ srt:{name:'简单反应时',dur:'约1分钟',desc:'方框变绿后尽快点击（或按空格）。前3次为练习，正式20次。指标：反应时中位数＋波动（注意涣散的标志）。',start:s=>srtRun(s)},
+ nback:{name:'2-back 工作记忆',dur:'约1分钟',desc:'逐个呈现字母。若当前字母与<b>前2个</b>相同，按"相同"按钮（或空格）。约9个匹配，全程60秒。示例：F K F → 按。指标：命中率＋误报＋漏报。',start:s=>nbRun(s)},
+ digit:{name:'数字广度',dur:'约2分钟',desc:'逐个呈现数字，看完后<b>按原顺序</b>（顺背）或<b>倒序</b>（倒背）输入。每位数有2次机会，过1关升级1位。指标：最长广度。',start:s=>digitRun(s)},
+ cancel:{name:'符号划消',dur:'60秒',desc:'在一堆相似字符里尽快点出<b>全部 b</b>，60秒内找全最好。练的就是"看了但没看见"的病。指标：找到率＋误点数＋用时。',start:s=>cancelRun(s)},
+ crt:{name:'选择反应时',dur:'约1分钟',desc:'方框出现颜色后，点击对应按钮（或按 1红/2绿/3蓝/4黄）。前2次练习，正式20次。指标：中位数＋正确率。',start:s=>crtRun(s)},
+ stroop:{name:'Stroop 干扰抑制',dur:'45秒',desc:'屏幕显示一个字（红/绿/蓝/黄），字的颜色与字义可能不一致。<b>请按"字的颜色"点击下方色块</b>，不要读字。45秒内尽量多做。指标：正确率＋干扰量（不一致比一致慢多少）。',start:s=>stroopRun(s)}
+};
+function batteryFor(key){const dow=new Date(key+'T12:00:00').getDay();return dow===1?['srt','nback','digit','cancel','crt','stroop']:['srt','nback','digit','cancel'];}
+function fmtRes(id,r){if(!r)return '—';switch(id){
+ case 'srt':return '中位 '+r.median+' ms（SD '+r.sd+'）';
+ case 'nback':return '命中 '+r.hits+'/'+r.n+' · 误报 '+r.fa+' · 漏 '+r.miss;
+ case 'digit':return '顺背 '+r.fwd+' · 倒背 '+r.bwd;
+ case 'cancel':return r.hit+'/'+r.targets+' · 误点 '+r.false+' · '+r.timeUsed+'s'+(r.foundAll?'（找全）':'');
+ case 'crt':return '中位 '+r.median+' ms · 正确 '+r.acc+'%';
+ case 'stroop':return '正确 '+r.acc+'% · 干扰 '+(r.interference==null?'—':r.interference+' ms');
+ default:return '';}
+}
+function renderBattery(){
+ const key=todayKey();const rec=getRec(key);const done=rec&&rec.tests&&rec.tests.testDone;const list=batteryFor(key);
+ $('battery-note').textContent=list.length>4?'今日周一：6项，约7.5分钟。':'每日4项，约5分钟。周一自动加"选择反应时＋Stroop"。';
+ const box=$('battery-list');box.innerHTML='';
+ list.forEach(id=>{const t=TESTDEFS[id];const res=rec&&rec.tests?rec.tests[id]:null;
+  box.appendChild(el('div','test-item','<div><b>'+t.name+'</b><span class="dur">'+t.dur+'</span></div><div class="res">'+(res?fmtRes(id,res):'—')+'</div>'));});
+ $('btn-start-test').style.display=done?'none':'';
+ $('btn-retest').style.display=done?'':'none';
+ $('test-progress').textContent=done?'今日已完成':'未开始';
+}
+function startBattery(){RUN={active:true,idx:0,list:batteryFor(todayKey()),results:{}};runTest(0);}
+function runTest(i){
+ if(!RUN.active)return;
+ if(i>=RUN.list.length){finishRun();return;}
+ RUN.idx=i;$('test-progress').textContent='第 '+(i+1)+'/'+RUN.list.length+' 项';
+ TESTDEFS[RUN.list[i]].start($('test-stage'));
+}
+function nextTest(id,res){
+ currentKeyHandler=null;clearAllTimers();RUN.results[id]=res;
+ $('test-stage').innerHTML='<div class="card intro"><h3>✔ '+TESTDEFS[id].name+' 完成</h3><div class="resline">'+fmtRes(id,res)+'</div></div>';
+ later(()=>runTest(RUN.idx+1),1400);
+}
+function finishRun(){
+ const rec=dayRec(todayKey());rec.tests=Object.assign(rec.tests||{},RUN.results);
+ rec.tests.testDone=true;rec.tests.count=(rec.tests.count||0)+1;
+ saveDB();RUN.active=false;updateHeader();renderBattery();ding(2);
+ $('test-stage').innerHTML='<div class="bigmsg">🎉 今日测试全部完成</div><div class="resline">今天的成绩就是数据点——坚持比分数重要</div>';
+}
+function showIntro(id,cb){
+ const st=$('test-stage');st.innerHTML='';const t=TESTDEFS[id];
+ const c=el('div','card intro','<h3>'+t.name+'<span class="dur">'+t.dur+'</span></h3><div class="desc" style="margin-top:8px">'+t.desc+'</div>');
+ const b=el('button','btn primary','开始');b.style.marginTop='16px';b.onclick=cb;c.appendChild(b);st.appendChild(c);
+}
+/* ============ 简单反应时 ============ */
+function srtRun(stage){
+ showIntro('srt',()=>{
+  currentKeyHandler=e=>{if(e.code==='Space'){e.preventDefault();click();}};
+  stage.innerHTML='';box('#dfe6ee','准备…等方框变绿');later(next,randInt(1000,2600));
+ });
+ let t0=0,green=false,rts=[];
+ function box(bg,txt){stage.innerHTML='';const b=el('div','srtbox',txt);b.style.background=bg;b.onclick=click;stage.appendChild(b);}
+ function next(){green=true;t0=performance.now();box('#27ae60','');}
+ function click(){
+  if(!green){clearAllTimers();green=false;box('#c0392b','太早了！等绿色');later(next,1500);return;}
+  const rt=Math.round(performance.now()-t0);green=false;rts.push(rt);clearAllTimers();
+  if(rts.length>=23){later(end,500);return;}
+  const label=rts.length<=3?('练习 '+rts.length+'/3'):('正式 '+(rts.length-3)+'/20');
+  box('#dfe6ee','✓ '+rt+' ms · '+label);later(next,randInt(900,2400));
+ }
+ function end(){const real=rts.slice(3);nextTest('srt',{median:Math.round(median(real)),sd:Math.round(sd(real))});}
+}
+/* ============ 选择反应时 ============ */
+function crtRun(stage){
+ showIntro('crt',()=>{
+  currentKeyHandler=e=>{const m={Digit1:0,Digit2:1,Digit3:2,Digit4:3}[e.code];if(m!==undefined){e.preventDefault();respond(m);}};
+  stage.innerHTML='';drawUI();later(next,randInt(800,2000));
+ });
+ const COLORS=[{c:'#e74c3c',k:'红'},{c:'#27ae60',k:'绿'},{c:'#2980b9',k:'蓝'},{c:'#f1c40f',k:'黄'}];
+ let cur=-1,t0=0,rts=[],okReal=0,shown=0;
+ function drawUI(){
+  stage.innerHTML='';const sq=el('div','crtsq');sq.id='crt-sq';sq.style.background='#dfe6ee';stage.appendChild(sq);
+  const row=el('div','btnrow');
+  COLORS.forEach((c,i)=>{const b=el('button','crtbtn',c.k);b.style.borderColor=c.c;b.onclick=()=>respond(i);row.appendChild(b);});
+  stage.appendChild(row);
+ }
+ function next(){
+  if(shown>=22){end();return;}
+  cur=randInt(0,3);shown++;t0=performance.now();
+  const sq=$('crt-sq');sq.style.background=COLORS[cur].c;sq.style.border='none';
+ }
+ function respond(i){
+  if(cur<0)return;
+  const rt=Math.round(performance.now()-t0);const ok=(i===cur);cur=-1;
+  if(shown>2&&ok){okReal++;rts.push(rt);}
+  const sq=$('crt-sq');sq.style.background='#dfe6ee';sq.style.border='2px solid #e4e9f0';
+  later(next,ok?randInt(500,1100):randInt(900,1600));
+ }
+ function end(){nextTest('crt',{median:Math.round(median(rts)),acc:Math.round(okReal/20*100)});}
+}
+/* ============ Stroop ============ */
+function stroopRun(stage){
+ showIntro('stroop',()=>{
+  currentKeyHandler=e=>{const m={Digit1:0,Digit2:1,Digit3:2,Digit4:3}[e.code];if(m!==undefined){e.preventDefault();respond(m);}};
+  stage.innerHTML='';drawUI();endAt=performance.now()+45000;later(next,400);
+ });
+ const INK={'红':'#e74c3c','绿':'#27ae60','蓝':'#2980b9','黄':'#f1c40f'};const words=['红','绿','蓝','黄'];
+ let endAt=0,cur=null,trials=[],n=0;
+ function drawUI(){
+  stage.innerHTML='';const ch=el('div','bigchar');ch.id='st-word';stage.appendChild(ch);
+  const row=el('div','btnrow');
+  words.forEach((w,i)=>{const b=el('button','crtbtn','　');b.style.background=INK[w];b.style.borderColor='#fff';b.style.width='54px';b.style.height='40px';b.onclick=()=>respond(i);row.appendChild(b);});
+  stage.appendChild(row);
+ }
+ function next(){
+  if(performance.now()>=endAt){end();return;}
+  const w=randInt(0,3);let ink;
+  if(Math.random()<0.5){ink=w;}else{do{ink=randInt(0,3);}while(ink===w);}
+  cur={ink,cong:(w===ink),t0:performance.now()};
+  const d=$('st-word');d.textContent=words[w];d.style.color=INK[words[ink]];
+ }
+ function respond(i){
+  if(!cur)return;
+  trials.push({rt:Math.round(performance.now()-cur.t0),ok:(i===cur.ink),cong:cur.cong});n++;cur=null;
+  const d=$('st-word');d.textContent='';
+  later(next,250);
+ }
+ function end(){
+  const okArr=trials.filter(t=>t.ok);
+  const acc=Math.round(okArr.length/Math.max(1,n)*100);
+  const rc=okArr.filter(t=>t.cong).map(t=>t.rt),ri=okArr.filter(t=>!t.cong).map(t=>t.rt);
+  const interference=(rc.length&&ri.length)?Math.round(median(ri)-median(rc)):null;
+  nextTest('stroop',{acc,interference,n});
+ }
+}
+/* ============ 2-back ============ */
+function nbRun(stage){
+ showIntro('nback',()=>{
+  currentKeyHandler=e=>{if(e.code==='Space'){e.preventDefault();press();}};
+  stage.innerHTML='';run();
+ });
+ const LETTERS=['C','D','F','G','H','K','L','P','R','T'];
+ let seq=[],nMatch=0,hits=0,fa=0,miss=0,i=-1,responded=true;
+ function gen(){
+  seq=[];nMatch=0;
+  for(let k=0;k<30;k++){
+   if(k>=2&&Math.random()<0.32){seq.push(seq[k-2]);nMatch++;}
+   else{let L;do{L=LETTERS[randInt(0,9)];}while(k>=2&&L===seq[k-2]);seq.push(L);}
+  }
+ }
+ function run(){
+  gen();
+  const w=el('div','nbwrap','<div class="nbcounter" id="nb-c"></div><div class="nbletter" id="nb-l"></div><div class="nbfb" id="nb-fb"></div>');
+  const b=el('button','btn primary','相同（空格）');b.style.marginTop='8px';b.onclick=press;
+  w.appendChild(b);stage.appendChild(w);step();
+ }
+ function step(){
+  i++;
+  if(i>=30){end();return;}
+  if(i>=1){const j=i-1;if(j>=2&&seq[j]===seq[j-2]&&!responded){miss++;}}
+  $('nb-c').textContent=(i+1)+' / 30';
+  $('nb-l').textContent=seq[i];responded=false;
+  later(()=>{const L=$('nb-l');if(L)L.textContent='';},700);
+  later(step,2000);
+ }
+ function press(){
+  if(i<2||responded)return;
+  responded=true;
+  if(seq[i]===seq[i-2]){hits++;fb('✓ 命中','#27ae60');}else{fa++;fb('✗ 误报','#c0392b');}
+ }
+ function fb(t,col){const f=$('nb-fb');f.textContent=t;f.style.color=col;later(()=>{if(f)f.textContent='';},700);}
+ function end(){
+  const j=29;if(j>=2&&seq[j]===seq[j-2]&&!responded){miss++;}
+  nextTest('nback',{hits,fa,miss,n:nMatch,acc:Math.round(hits/Math.max(1,nMatch)*100)});
+ }
+}
+/* ============ 数字广度 ============ */
+function digitRun(stage){
+ showIntro('digit',()=>{modeRun('fwd');});
+ let F=2;
+ function modeRun(mode){
+  let level=3,best=2;
+  nextLevel();
+  function nextLevel(){if(level>9){modeDone();return;}trial(1);}
+  function trial(n){
+   const sq=[];
+   for(let k=0;k<level;k++){let d;do{d=randInt(0,9);}while(k>0&&d===sq[k-1]);sq.push(d);}
+   play(sq,0,()=>ask(sq,n));
+  }
+  function play(sq,idx,cb){
+   if(idx>=sq.length){later(cb,300);return;}
+   stage.innerHTML='';const big=el('div','bigchar',String(sq[idx]));stage.appendChild(big);
+   later(()=>{big.textContent='';later(()=>play(sq,idx+1,cb),260);},720);
+  }
+  function ask(sq,n){
+   stage.innerHTML='';
+   const c=el('div','card intro','<h3>'+(mode==='fwd'?'顺背':'倒背')+' · '+level+' 位 · 第'+n+'/2次</h3><div class="desc">'+(mode==='fwd'?'按<b>原顺序</b>输入':'按<b>倒序</b>输入')+'</div>');
+   const inp=el('input','diginput');inp.setAttribute('inputmode','numeric');inp.maxLength=9;
+   const b=el('button','btn primary','提交');b.style.marginTop='10px';b.onclick=()=>check();
+   c.appendChild(inp);c.appendChild(b);stage.appendChild(c);inp.focus();
+   function check(){
+    const v=(inp.value||'').replace(/\D/g,'');
+    const tgt=(mode==='fwd'?sq.slice():sq.slice().reverse()).join('');
+    stage.innerHTML='';const big=el('div','bigchar',v===tgt?'✓':'✗');
+    big.style.color=(v===tgt)?'#27ae60':'#c0392b';stage.appendChild(big);
+    later(()=>{
+     if(v===tgt){best=level;level++;nextLevel();}
+     else if(n===1){trial(2);}
+     else{modeDone();}
+    },900);
+   }
+  }
+  function modeDone(){
+   if(mode==='fwd'){F=Math.max(2,best);modeRun('bwd');}
+   else{nextTest('digit',{fwd:F,bwd:Math.max(2,best)});}
+  }
+ }
+}
+/* ============ 符号划消 ============ */
+function cancelRun(stage){
+ showIntro('cancel',()=>{stage.innerHTML='';run();});
+ const TARGET='b',DIST=['d','p','q'],COLS=20,ROWS=12,TARGETS=28;
+ let grid=[],found=0,falses=0,t0=0,remain=60,ended=false,iv=null;
+ function run(){
+  grid=Array(COLS*ROWS).fill(null);
+  const idxs=shuffle([...Array(COLS*ROWS).keys()]).slice(0,TARGETS);
+  idxs.forEach(p=>{grid[p]=TARGET;});
+  for(let k=0;k<grid.length;k++){if(!grid[k])grid[k]=DIST[randInt(0,2)];}
+  t0=performance.now();
+  const c=el('div','card','<div class="rowline"><div class="targetbig">目标：点出全部 <span class="tb">b</span></div><b id="cn-timer" style="color:var(--p)">60 s</b></div>');
+  const g=el('div','cgrid');
+  grid.forEach((ch,idx)=>{const b=el('button','ccell',ch);b.onclick=()=>clickCell(b,idx);g.appendChild(b);});
+  c.appendChild(g);stage.appendChild(c);
+  iv=setInterval(()=>{remain--;const t=$('cn-timer');if(t)t.textContent=remain+' s';if(remain<=0)end(false);},1000);
+  INTER.push(iv);
+ }
+ function clickCell(b,idx){
+  if(ended||b.disabled)return;
+  b.disabled=true;
+  if(grid[idx]===TARGET){b.classList.add('hit');found++;if(found>=TARGETS)end(true);}
+  else{b.classList.add('miss');falses++;}
+ }
+ function end(all){
+  if(ended)return;ended=true;
+  if(iv)clearInterval(iv);
+  const timeUsed=all?Math.max(1,Math.round((performance.now()-t0)/1000)):60;
+  nextTest('cancel',{hit:found,targets:TARGETS,false:falses,timeUsed,foundAll:all});
+ }
+}
+/* ============ 正念计时器 ============ */
+let mindIv=null,mindRemain=600,mindTotal=600,mindRunning=false,lastBell=-1;
+function mindPreset(){if(!mindRunning){mindRemain=Number($('mind-min').value)||600;renderMind();}}
+function renderMind(){
+ const m=Math.floor(mindRemain/60),s=('0'+(mindRemain%60)).slice(-2);
+ $('mind-time').textContent=m+':'+s;
+ $('mind-circle').classList.toggle('run',mindRunning);
+ $('mind-start').textContent=mindRunning?'进行中…':'开始';
+ $('mind-start').disabled=mindRunning;
+}
+function startMind(){
+ if(mindRunning)return;
+ mindRunning=true;mindTotal=Number($('mind-min').value)||600;mindRemain=mindTotal;lastBell=-1;
+ ding(1);renderMind();
+ mindIv=setInterval(()=>{
+  mindRemain--;
+  if(mindRemain<=0){stopMind(true);}
+  else{
+   const elapsed=mindTotal-mindRemain;
+   if($('mind-bell').checked&&Math.floor(elapsed/150)>lastBell){lastBell=Math.floor(elapsed/150);ding(1);}
+  }
+  renderMind();
+ },1000);
+}
+function stopMind(finished){
+ clearInterval(mindIv);mindRunning=false;
+ if(!finished){mindRemain=Number($('mind-min').value)||600;}
+ renderMind();
+ if(finished){
+  ding(3);
+  const rec=dayRec(todayKey());rec.habits=rec.habits||{};rec.habits.mind=true;
+  saveDB();toast('正念完成 ✓ 已写入今日打卡');
+  updateHeader();
+  if($('page-daily').classList.contains('active'))loadDailyForm();
+ }
+}
+/* ============ 趋势 ============ */
+function sortedKeys(){return Object.keys(DB.days).filter(k=>/^\d{4}-\d{2}-\d{2}$/.test(k)).sort();}
+function collect(metric){
+ const out=[];
+ sortedKeys().forEach(k=>{
+  const r=DB.days[k];let v=null;
+  if(metric==='sleepDur')v=r.sleep?durHours(r.sleep.bed,r.sleep.wake):null;
+  else if(metric==='sleepQual')v=r.sleep?(r.sleep.quality||null):null;
+  else if(metric==='srt')v=(r.tests&&r.tests.srt)?r.tests.srt.median:null;
+  else if(metric==='nback')v=(r.tests&&r.tests.nback)?r.tests.nback.acc:null;
+  else if(metric==='digitF')v=(r.tests&&r.tests.digit)?r.tests.digit.fwd:null;
+  else if(metric==='digitB')v=(r.tests&&r.tests.digit)?r.tests.digit.bwd:null;
+  else if(metric==='cancel')v=(r.tests&&r.tests.cancel)?Math.round(r.tests.cancel.hit/r.tests.cancel.targets*100):null;
+  else if(metric==='cap'){const c=r.capture;if(c&&c.hit+c.miss>0)v=Math.round(c.hit/(c.hit+c.miss)*100);}
+  if(v!==null&&v!==undefined&&!isNaN(v))out.push({d:k,v:v});
+ });
+ return out;
+}
+function rolling(pts,w){
+ const out=[];
+ for(let i=0;i<pts.length;i++){
+  const arr=pts.slice(Math.max(0,i-w+1),i+1).map(p=>p.v);
+  out.push({d:pts[i].d,v:+(mean(arr)||0).toFixed(2)});
+ }
+ return out;
+}
+function drawChart(cid,pts,opts){
+ const cv=$(cid);if(!cv)return;
+ const ctx=cv.getContext('2d');
+ ctx.clearRect(0,0,cv.width,cv.height);
+ ctx.font='12px sans-serif';
+ const W=cv.width,H=cv.height,pad={l:46,r:14,t:12,b:26};
+ if(!pts||pts.length<1){ctx.fillStyle='#8395a7';ctx.fillText('暂无数据——先去打卡和测试',pad.l,H/2);return;}
+ const roll=opts.roll||[];const extra=(opts.extra&&opts.extra.pts)||[];
+ const all=pts.map(p=>p.v).concat(roll.map(p=>p.v)).concat(extra.map(p=>p.v));
+ let lo=Math.min.apply(null,all),hi=Math.max.apply(null,all);
+ if(lo===hi){lo-=1;hi+=1;}
+ const pd=(hi-lo)*0.15;lo-=pd;hi+=pd;
+ const n=pts.length,x0=pts[0].d,x1=pts[n-1].d;
+ const dts=k=>new Date(k+'T12:00:00').getTime();
+ const span=dts(x1)-dts(x0);
+ const toX=d=>pad.l+(span?(dts(d)-dts(x0))/span:0)*(W-pad.l-pad.r);
+ const toY=v=>H-pad.b-(v-lo)/(hi-lo)*(H-pad.t-pad.b);
+ ctx.strokeStyle='#e4e9f0';ctx.fillStyle='#8395a7';ctx.textAlign='left';
+ for(let g=0;g<=4;g++){
+  const y=pad.t+(H-pad.t-pad.b)*g/4;
+  ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();
+  const val=lo+(hi-lo)*(4-g)/4;
+  ctx.fillText(opts.fmt==='int'?String(Math.round(val)):(+val.toFixed(1)),4,y+4);
+ }
+ ctx.textAlign='center';
+ const step=Math.max(1,Math.ceil(n/7));
+ pts.forEach((p,i)=>{if(i%step===0||i===n-1){ctx.fillText(p.d.slice(5),toX(p.d),H-8);}});
+ ctx.textAlign='left';
+ const line=(arr,color,dash)=>{
+  if(arr.length<2)return;
+  ctx.strokeStyle=color;ctx.lineWidth=2;
+  if(dash)ctx.setLineDash([5,4]);
+  ctx.beginPath();
+  arr.forEach((p,i)=>{const x=toX(p.d),y=toY(p.v);i?ctx.lineTo(x,y):ctx.moveTo(x,y);});
+  ctx.stroke();ctx.setLineDash([]);ctx.lineWidth=1;
+ };
+ line(roll,'#f5b301',true);
+ if(extra.length){line(extra,'#27ae60',false);}
+ line(pts,'#3a6ea5',false);
+ pts.forEach(p=>{ctx.fillStyle='#3a6ea5';ctx.beginPath();ctx.arc(toX(p.d),toY(p.v),2.5,0,7);ctx.fill();});
+}
+function drawAdh(){
+ const g=$('adh-grid');if(!g)return;
+ const today=new Date();const cells=[];
+ for(let i=55;i>=0;i--){
+  const d=new Date();d.setDate(today.getDate()-i);
+  const k=fmtDate(d);const r=getRec(k);
+  let cls='adhcell';
+  if(r&&r.tests&&r.tests.testDone)cls+=' full';
+  else if(r)cls+=' log';
+  cells.push('<div class="'+cls+'" title="'+k+'"></div>');
+ }
+ g.innerHTML=cells.join('');
+}
+function corrPairs(sv,metric){
+ const x=[],y=[];
+ sortedKeys().forEach(k=>{
+  const r=DB.days[k];if(!r.tests)return;
+  const p=getRec(prevDay(k));if(!p||!p.sleep)return;
+  const sx=(sv==='dur')?durHours(p.sleep.bed,p.sleep.wake):(p.sleep.quality||null);
+  let sy=null;
+  if(metric==='srt')sy=r.tests.srt?r.tests.srt.median:null;
+  else if(metric==='nback')sy=r.tests.nback?r.tests.nback.acc:null;
+  else if(metric==='digitF')sy=r.tests.digit?r.tests.digit.fwd:null;
+  else if(metric==='cancel')sy=r.tests.cancel?Math.round(r.tests.cancel.hit/r.tests.cancel.targets*100):null;
+  if(sx!==null&&sy!==null){x.push(sx);y.push(sy);}
+ });
+ return {x:x,y:y,n:x.length};
+}
+function renderCorr(){
+ const box=$('corr-table');if(!box)return;
+ const metrics=[['srt','反应时中位'],['nback','2-back命中'],['digitF','数字广度(顺)'],['cancel','划消找到率']];
+ const sleepVars=[['dur','昨晚睡眠时长'],['qual','昨晚睡眠质量']];
+ let html='<table class="corr"><tr><th>睡眠 \\ 次日</th>'+metrics.map(m=>'<th>'+m[1]+'</th>').join('')+'</tr>';
+ sleepVars.forEach(sv=>{
+  const cells=metrics.map(mt=>{
+   const pr=corrPairs(sv[0],mt[0]);
+   const r=pr.n>=3?pearson(pr.x,pr.y):null;
+   const txt=(r===null||r===undefined)?'—':((r>=0?'+':'')+r.toFixed(2));
+   return '<td>'+txt+'<br><small>n='+pr.n+'</small></td>';
+  }).join('');
+  html+='<tr><td>'+sv[1]+'</td>'+cells+'</tr>';
+ });
+ html+='</table>';
+ const total=sortedKeys().length;
+ html+='<p class="hint">当前共 '+total+' 天数据。r 主要用来发现个人规律（如"睡眠&lt;6.5h的日子2-back命中率明显低"），不做统计学断言。</p>';
+ box.innerHTML=html;
+}
+function renderTrends(){
+ drawAdh();
+ const m1=collect('sleepDur');drawChart('c-sleepDur',m1,{roll:rolling(m1,7)});
+ const m2=collect('sleepQual');drawChart('c-sleepQual',m2,{roll:rolling(m2,7),fmt:'int'});
+ const m3=collect('srt');drawChart('c-srt',m3,{roll:rolling(m3,7)});
+ const m4=collect('nback');drawChart('c-nback',m4,{roll:rolling(m4,7)});
+ const m5=collect('digitF'),m5b=collect('digitB');
+ drawChart('c-digit',m5,{roll:rolling(m5,7),fmt:'int',extra:{pts:m5b}});
+ const m6=collect('cancel');drawChart('c-cancel',m6,{roll:rolling(m6,7)});
+ const m7=collect('cap');drawChart('c-cap',m7,{roll:rolling(m7,7)});
+ renderCorr();
+}
+/* ============ 数据管理 ============ */
+function esc(v){return '"'+String(v).replace(/"/g,'""')+'"';}
+function download(content,name,type){
+ const a=document.createElement('a');
+ const blob=new Blob([content],{type:type+';charset=utf-8'});
+ a.href=URL.createObjectURL(blob);a.download=name;
+ document.body.appendChild(a);a.click();
+ setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);
+}
+function exportCSV(){
+ const keys=sortedKeys();
+ const head=['date','sleepBed','sleepWake','sleepDur','sleepQual','nightWake','energy','mood','stress','supp','mind','exDone','cards','exType','exMin','exHR','capHit','capMiss','srtMedian','srtSD','nbackAcc','nbackHits','nbackFA','nbackMiss','digitFwd','digitBwd','cancelHit','cancelTargets','cancelFalse','cancelTime','crtMedian','crtAcc','stroopAcc','stroopInterf','testDone'];
+ const rows=[head.join(',')];
+ keys.forEach(k=>{
+  const r=DB.days[k];const t=r.tests||{},s=r.sleep||{},m=r.mood||{},h=r.habits||{},e=r.exercise||{},c=r.capture||{};
+  rows.push([
+   k,s.bed||'',s.wake||'',(durHours(s.bed,s.wake)!=null?durHours(s.bed,s.wake):''),s.quality||'',s.nightWake!=null?s.nightWake:'',
+   m.energy||'',m.mood||'',m.stress||'',
+   h.supp?'1':'0',h.mind?'1':'0',h.ex?'1':'0',h.cards?'1':'0',
+   e.type?esc(e.type):'',e.min||'',e.hr||'',c.hit||0,c.miss||0,
+   t.srt?t.srt.median:'',t.srt?t.srt.sd:'',
+   t.nback?t.nback.acc:'',t.nback?t.nback.hits:'',t.nback?t.nback.fa:'',t.nback?t.nback.miss:'',
+   t.digit?t.digit.fwd:'',t.digit?t.digit.bwd:'',
+   t.cancel?t.cancel.hit:'',t.cancel?t.cancel.targets:'',t.cancel?t.cancel.false:'',t.cancel?t.cancel.timeUsed:'',
+   t.crt?t.crt.median:'',t.crt?t.crt.acc:'',
+   t.stroop?t.stroop.acc:'',(t.stroop&&t.stroop.interference!=null)?t.stroop.interference:'',
+   t.testDone?'1':'0'
+  ].join(','));
+ });
+ download('\ufeff'+rows.join('\n'),'BrainLab_'+todayKey()+'.csv','text/csv');
+ toast('CSV已导出（含BOM，Excel直接打开不乱码）');
+}
+function exportJSON(){
+ download(JSON.stringify(DB,null,1),'BrainLab_backup_'+todayKey()+'.json','application/json');
+ toast('JSON已导出');
+}
+function importJSON(inp){
+ const f=inp.files&&inp.files[0];if(!f)return;
+ const rd=new FileReader();
+ rd.onload=()=>{
+  try{
+   const d=JSON.parse(rd.result);
+   if(!d||typeof d!=='object'||!d.days)throw new Error('bad');
+   let n=0;
+   Object.keys(d.days).forEach(k=>{DB.days[k]=d.days[k];n++;});
+   if(d.settings&&d.settings.testTime)DB.settings.testTime=d.settings.testTime;
+   saveDB();updateHeader();loadDailyForm();renderBattery();
+   if($('page-trend').classList.contains('active'))renderTrends();
+   toast('已导入 '+n+' 天数据');
+  }catch(e){toast('导入失败：文件格式不对');}
+ };
+ rd.readAsText(f);inp.value='';
+}
+function saveSettings(){
+ DB.settings.testTime=$('set-testtime').value||'09:30';
+ saveDB();updateHeader();toast('已保存');
+}
+function clearAll(){
+ if(!confirm('确定清空全部数据？此操作不可恢复（请先导出备份）。'))return;
+ if(!confirm('再次确认：真的要清空所有打卡、测试和趋势数据吗？'))return;
+ DB={days:{},settings:{testTime:'09:30'}};
+ saveDB();loadDailyForm();updateHeader();renderBattery();renderTrends();
+ toast('已清空');
+}
+/* ============ 初始化 ============ */
+function init(){
+ $('dl-date').value=todayKey();
+ ['dl-qual','dl-energy','dl-mood','dl-stress'].forEach(buildStars);
+ loadDailyForm();
+ updateHeader();
+ renderBattery();
+ renderTrends();
+ $('set-testtime').value=DB.settings.testTime||'09:30';
+ $('test-stage').innerHTML='<div class="card intro"><div class="desc">点上方"开始今日测试"。<br>今天的第一次成绩就是你的基线——它不用于评判，只用于对比。</div></div>';
+ document.addEventListener('keydown',e=>{
+  if(currentKeyHandler&&document.activeElement&&document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='TEXTAREA'){currentKeyHandler(e);}
+ });
+}
+window.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
