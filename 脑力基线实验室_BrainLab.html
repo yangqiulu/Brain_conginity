@@ -5,107 +5,128 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>脑力基线实验室 BrainLab</title>
 <style>
-:root{--p:#3a6ea5;--bg:#f4f6f9;--card:#ffffff;--tx:#2b3a4a;--mut:#7f8fa0;--ln:#e4e9f0;--ok:#27ae60;--warn:#e67e22;--bad:#c0392b;}
-*{box-sizing:border-box;margin:0;padding:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;}
-body{background:var(--bg);color:var(--tx);font-size:15px;line-height:1.6;}
-header{background:var(--card);border-bottom:1px solid var(--ln);padding:10px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:10;}
-.logo{font-weight:700;font-size:18px;color:var(--p);}
-.logo small{color:var(--mut);font-weight:400;margin-left:6px;}
+:root{--p:#0e9f6e;--p-deep:#0b7a55;--p-soft:#e3f3ec;--bg:#f2f6f4;--card:#ffffff;--tx:#20302a;--mut:#6f8279;--ln:#e4ece7;--ok:#1d9e6a;--warn:#e8a33d;--bad:#d64550;--amber:#f5b301;--shadow:0 1px 3px rgba(32,48,42,.08),0 1px 2px rgba(32,48,42,.05);}
+*{box-sizing:border-box;margin:0;padding:0;font-family:"Segoe UI","Microsoft YaHei","PingFang SC",system-ui,sans-serif;}
+body{background:var(--bg);color:var(--tx);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+header{background:rgba(255,255,255,.92);border-bottom:1px solid var(--ln);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:10;}
+.logo{font-weight:700;font-size:18px;color:var(--p-deep);letter-spacing:.5px;display:flex;align-items:center;gap:8px;}
+.logodot{width:10px;height:10px;border-radius:50%;background:var(--p);box-shadow:0 0 0 4px var(--p-soft);}
+.logo small{color:var(--mut);font-weight:400;font-size:12px;}
 .hstatus{font-size:13px;color:var(--mut);}
-.chip{display:inline-block;padding:1px 9px;border-radius:12px;font-size:12px;margin-left:8px;background:#eef3f8;color:var(--p);}
-.chip.done{background:#e8f7ef;color:var(--ok);}
+.chip{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;margin-left:8px;background:var(--p-soft);color:var(--p-deep);font-weight:500;}
+.chip.done{background:#d9f2e6;color:var(--ok);}
 .wrap{max-width:1040px;margin:0 auto;padding:14px;}
-nav{display:flex;gap:6px;margin:12px 0;}
-.navbtn{flex:1;padding:9px 4px;border:1px solid var(--ln);background:var(--card);border-radius:8px;cursor:pointer;font-size:14px;color:var(--mut);}
-.navbtn.active{background:var(--p);border-color:var(--p);color:#fff;font-weight:600;}
+nav{display:flex;gap:6px;margin:14px 0;background:var(--p-soft);padding:5px;border-radius:999px;}
+.navbtn{flex:1;padding:9px 4px;border:none;background:transparent;border-radius:999px;cursor:pointer;font-size:14px;color:var(--p-deep);transition:all .18s;font-weight:500;}
+.navbtn.active{background:#fff;color:var(--p-deep);font-weight:700;box-shadow:var(--shadow);}
 .page{display:none;}
-.page.active{display:block;}
-.card{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:16px 18px;margin-bottom:14px;}
-.card h2{font-size:17px;margin-bottom:8px;color:var(--p);}
-.card h3{font-size:16px;margin-bottom:6px;}
-.desc{color:var(--mut);font-size:14px;}
+.page.active{display:block;animation:fadein .25s ease;}
+@keyframes fadein{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.card{background:var(--card);border:none;border-radius:16px;padding:18px 20px;margin-bottom:14px;box-shadow:var(--shadow);}
+.card h2{font-size:16.5px;margin-bottom:8px;color:var(--p-deep);font-weight:700;}
+.card h3{font-size:15.5px;margin-bottom:6px;}
+.desc{color:var(--mut);font-size:13.8px;}
 .hint{color:var(--mut);font-size:12.5px;margin-top:8px;}
 .rowline{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px;}
-.btn{padding:8px 16px;border-radius:8px;border:1px solid var(--p);background:#fff;color:var(--p);cursor:pointer;font-size:14px;}
-.btn.primary{background:var(--p);color:#fff;}
-.btn.sm{padding:4px 10px;font-size:13px;}
+.btn{padding:8px 18px;border-radius:10px;border:1px solid var(--p);background:#fff;color:var(--p-deep);cursor:pointer;font-size:14px;transition:all .15s;}
+.btn:hover{background:var(--p-soft);}
+.btn.primary{background:var(--p);color:#fff;border-color:var(--p);}
+.btn.primary:hover{background:var(--p-deep);}
+.btn.sm{padding:4px 11px;font-size:13px;}
 .btn.danger{border-color:var(--bad);color:var(--bad);}
+.btn.danger:hover{background:#fdebec;}
 .btn:disabled{opacity:.5;cursor:default;}
-label.fld{display:block;margin:8px 0 2px;font-size:13.5px;color:var(--mut);}
-input[type=text],input[type=time],input[type=date],input[type=number],select,textarea{padding:7px 9px;border:1px solid var(--ln);border-radius:8px;font-size:14px;background:#fff;color:var(--tx);width:100%;}
+label.fld{display:block;margin:8px 0 2px;font-size:13px;color:var(--mut);}
+input[type=text],input[type=time],input[type=date],input[type=number],select,textarea{padding:8px 11px;border:1px solid var(--ln);border-radius:10px;font-size:14px;background:#fff;color:var(--tx);width:100%;transition:border .15s;}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--p);}
+input[type=range]{width:100%;accent-color:var(--p);}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 16px;}
 @media(max-width:640px){.grid2,.grid3{grid-template-columns:1fr;}}
-.stars{display:flex;gap:6px;flex-wrap:wrap;}
-.stars .st{cursor:pointer;font-size:22px;color:#d5dde6;user-select:none;padding:0 2px;}
-.stars .st.on{color:#f5b301;}
+.stars{display:flex;gap:5px;flex-wrap:wrap;}
+.stars .st{cursor:pointer;font-size:21px;color:#d7e0db;user-select:none;padding:0 2px;transition:color .1s;}
+.stars .st.on{color:var(--amber);}
+.hb{display:flex;align-items:center;gap:6px;background:var(--p-soft);border-radius:999px;padding:6px 13px;cursor:pointer;font-size:13.5px;color:var(--p-deep);transition:all .15s;}
 .habits{display:flex;flex-wrap:wrap;gap:8px;}
-.habits .hb{display:flex;align-items:center;gap:6px;background:#eef3f8;border-radius:20px;padding:5px 12px;cursor:pointer;font-size:13.5px;color:var(--p);}
 .hb input{accent-color:var(--p);}
-.capbtns{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
-.cap{font-size:15px;padding:8px 14px;border-radius:10px;border:1px solid var(--ln);background:#fff;cursor:pointer;}
-.cap.hit{border-color:var(--ok);color:var(--ok);}
-.cap.miss{border-color:var(--bad);color:var(--bad);}
-.capnum{font-size:22px;font-weight:700;min-width:40px;display:inline-block;text-align:center;}
+.qchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.qchip{padding:4px 12px;border-radius:999px;border:1px solid var(--ln);background:#fff;color:var(--mut);font-size:12.5px;cursor:pointer;transition:all .15s;user-select:none;}
+.qchip:hover{border-color:var(--p);color:var(--p-deep);}
+.qchip.sel{background:var(--p);border-color:var(--p);color:#fff;}
 .test-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 4px;border-bottom:1px dashed var(--ln);}
 .test-item:last-child{border-bottom:none;}
 .test-item b{font-size:15px;}
 .dur{color:var(--mut);font-size:12.5px;margin-left:8px;font-weight:400;}
-.res{color:var(--p);font-size:13.5px;text-align:right;white-space:nowrap;}
-.intro{text-align:center;padding:26px 18px;}
-.intro .btn{margin-top:14px;font-size:16px;padding:10px 26px;}
-.srtbox{width:220px;height:220px;border-radius:14px;margin:20px auto;display:flex;align-items:center;justify-content:center;font-size:19px;color:#fff;cursor:pointer;user-select:none;text-align:center;}
-.crtsq{width:130px;height:130px;border-radius:12px;margin:14px auto;border:2px solid var(--ln);}
+.res{color:var(--p-deep);font-size:13.5px;text-align:right;white-space:nowrap;}
+.intro{text-align:center;padding:28px 18px;}
+.intro .btn{margin-top:14px;font-size:16px;padding:10px 28px;border-radius:12px;}
+.srtbox{width:220px;height:220px;border-radius:18px;margin:20px auto;display:flex;align-items:center;justify-content:center;font-size:19px;color:#fff;cursor:pointer;user-select:none;text-align:center;}
+.crtsq{width:130px;height:130px;border-radius:14px;margin:14px auto;border:2px solid var(--ln);}
 .btnrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:10px 0;}
-.crtbtn{padding:10px 22px;font-size:16px;border-radius:10px;border:2px solid var(--ln);background:#fff;cursor:pointer;}
+.crtbtn{padding:10px 22px;font-size:16px;border-radius:12px;border:2px solid var(--ln);background:#fff;cursor:pointer;transition:all .15s;}
+.crtbtn:hover{transform:translateY(-1px);}
 .bigchar{font-size:84px;font-weight:700;text-align:center;margin:18px 0;}
-.nbletter{height:110px;font-size:80px;font-weight:700;text-align:center;line-height:110px;}
+.nbletter{height:110px;font-size:80px;font-weight:700;text-align:center;line-height:110px;color:var(--p-deep);}
 .nbwrap{text-align:center;}
 .nbcounter{color:var(--mut);font-size:13px;}
-.nbfb{height:26px;font-size:15px;color:var(--mut);}
-.diginput{font-size:24px;letter-spacing:6px;text-align:center;max-width:260px;margin:10px auto;display:block;}
+.nbfb{height:26px;font-size:15px;}
+.diginput{font-size:24px;letter-spacing:6px;text-align:center;max-width:280px;margin:10px auto;display:block;}
 .cgrid{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;margin-top:10px;}
 @media(max-width:700px){.cgrid{grid-template-columns:repeat(12,1fr);}}
-.ccell{aspect-ratio:1/1;font-size:15px;border:1px solid var(--ln);background:#fff;border-radius:4px;cursor:pointer;line-height:1;padding:0;}
+.ccell{aspect-ratio:1/1;font-size:15px;border:1px solid var(--ln);background:#fff;border-radius:5px;cursor:pointer;line-height:1;padding:0;transition:all .12s;}
+.ccell:hover{border-color:var(--p);}
 .ccell.hit{background:var(--ok);border-color:var(--ok);color:#fff;}
 .ccell.miss{background:var(--bad);border-color:var(--bad);color:#fff;}
 .targetbig{font-size:15px;}
-.tb{color:var(--p);font-size:20px;}
-.mindcircle{width:190px;height:190px;border-radius:50%;background:radial-gradient(circle,#dbe7f3,var(--p));margin:16px auto;animation:breathe 10s ease-in-out infinite paused;}
+.tb{color:var(--p-deep);font-size:20px;}
+.tgroups{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;margin:16px 0;}
+.tgroup{display:inline-flex;gap:8px;margin:6px 12px;padding:6px 10px;border-radius:12px;background:var(--p-soft);}
+.slot{width:42px;height:54px;border-radius:9px;background:#fff;font-size:27px;font-weight:700;display:flex;align-items:center;justify-content:center;color:var(--tx);}
+.slot.cur{background:var(--p);color:#fff;box-shadow:0 2px 10px rgba(14,159,110,.35);}
+.slot.dim{color:#b9c8c0;}
+.slot.err{background:#fdebec;color:var(--bad);}
+.mindcircle{width:190px;height:190px;border-radius:50%;background:radial-gradient(circle,#d8f0e4,var(--p));margin:16px auto;animation:breathe 10s ease-in-out infinite paused;}
 .mindcircle.run{animation-play-state:running;}
 @keyframes breathe{0%,100%{transform:scale(.86);}50%{transform:scale(1.05);}}
-.mindtime{font-size:40px;font-weight:700;text-align:center;letter-spacing:2px;color:var(--p);}
-canvas{max-width:100%;background:#fff;border:1px solid var(--ln);border-radius:10px;}
+.mindtime{font-size:40px;font-weight:700;text-align:center;letter-spacing:2px;color:var(--p-deep);}
+canvas{max-width:100%;background:#fff;border-radius:12px;box-shadow:var(--shadow);}
 .chartblock{margin:12px 0;}
 .chartblock h4{font-size:14px;margin-bottom:4px;font-weight:600;}
 .adh{display:grid;grid-template-columns:repeat(28,1fr);gap:3px;}
 @media(max-width:700px){.adh{grid-template-columns:repeat(14,1fr);}}
-.adhcell{aspect-ratio:1;border-radius:3px;background:#edf1f6;}
-.adhcell.log{background:#bcd6ee;}
-.adhcell.full{background:var(--ok);}
+.adhcell{aspect-ratio:1;border-radius:4px;background:#e6ede9;}
+.adhcell.log{background:#a8d9bd;}
+.adhcell.full{background:var(--p-deep);}
 table.corr{width:100%;border-collapse:collapse;font-size:13.5px;}
 table.corr th,table.corr td{border-bottom:1px solid var(--ln);padding:6px 8px;text-align:center;}
-table.corr th{color:var(--mut);font-weight:600;background:#f7f9fc;}
-.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#33465a;color:#fff;padding:9px 20px;border-radius:24px;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:99;}
-.toast.show{opacity:.95;}
+table.corr th{color:var(--mut);font-weight:600;background:#f4f8f6;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(8px);background:#22352d;color:#fff;padding:10px 22px;border-radius:999px;font-size:14px;opacity:0;transition:all .3s;pointer-events:none;z-index:99;box-shadow:0 4px 16px rgba(0,0,0,.18);}
+.toast.show{opacity:.96;transform:translateX(-50%) translateY(0);}
 .bigmsg{text-align:center;padding:40px 0;font-size:20px;color:var(--ok);font-weight:600;}
-.resline{text-align:center;color:var(--p);margin-top:6px;}
+.resline{text-align:center;color:var(--p-deep);margin-top:6px;}
 ul.steps{padding-left:20px;font-size:14px;}
 ul.steps li{margin:4px 0;}
+.rdtimer{font-size:30px;font-weight:700;color:var(--p-deep);text-align:center;margin:6px 0;}
+.rdbox{max-height:340px;overflow:auto;background:#f7faf8;border-radius:12px;padding:16px 18px;font-size:15px;line-height:1.9;white-space:pre-wrap;}
+.rdcount{font-size:13px;color:var(--mut);text-align:right;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;}
+@media(max-width:700px){.two-col{grid-template-columns:1fr;}}
+.pane{background:#f7faf8;border-radius:12px;padding:12px 14px;max-height:300px;overflow:auto;white-space:pre-wrap;font-size:13.5px;}
+.pane h5{font-size:13px;color:var(--p-deep);margin-bottom:6px;}
 </style>
 </head>
 <body>
 <header>
- <div class="logo">🧠 脑力基线实验室<small>BrainLab · n=1</small></div>
+ <div class="logo"><span class="logodot"></span>脑力基线实验室<small>BrainLab v2 · n=1</small></div>
  <div class="hstatus"><span id="hdr-date"></span><span class="chip" id="hdr-status">⏳ 今日测试未完成</span><span class="chip" id="hdr-streak">🔥 连续 0 天</span></div>
 </header>
 <div class="wrap">
 <nav>
- <button class="navbtn active" data-tab="daily" onclick="showTab('daily')">今日打卡</button>
- <button class="navbtn" data-tab="test" onclick="showTab('test')">认知测试</button>
+ <button class="navbtn active" data-tab="daily" onclick="showTab('daily')">今日</button>
+ <button class="navbtn" data-tab="test" onclick="showTab('test')">测试</button>
+ <button class="navbtn" data-tab="read" onclick="showTab('read')">阅读</button>
  <button class="navbtn" data-tab="mind" onclick="showTab('mind')">正念</button>
- <button class="navbtn" data-tab="trend" onclick="showTab('trend')">趋势</button>
- <button class="navbtn" data-tab="data" onclick="showTab('data')">数据</button>
+ <button class="navbtn" data-tab="trend" onclick="showTab('trend')">回顾</button>
 </nav>
 
 <div id="page-daily" class="page active">
@@ -113,8 +134,10 @@ ul.steps li{margin:4px 0;}
   <div class="rowline"><h2>今日打卡</h2><input type="date" id="dl-date" style="max-width:170px" onchange="loadDailyForm()"></div>
   <p class="desc" id="hint-testtime"></p>
   <div class="grid3">
-   <div><label class="fld">入睡时间（昨晚）</label><input type="time" id="dl-bed" onchange="updateDur()"></div>
-   <div><label class="fld">起床时间</label><input type="time" id="dl-wake" onchange="updateDur()"></div>
+   <div><label class="fld">入睡时间（昨晚）</label><input type="text" id="dl-bed" placeholder="2330 / 23:30 / 730" onblur="normTime(this)">
+    <div class="qchips"><span class="qchip" onclick="setTime('dl-bed','22:30')">22:30</span><span class="qchip" onclick="setTime('dl-bed','23:00')">23:00</span><span class="qchip" onclick="setTime('dl-bed','23:30')">23:30</span><span class="qchip" onclick="setTime('dl-bed','00:00')">00:00</span><span class="qchip" onclick="setTime('dl-bed','00:30')">00:30</span></div></div>
+   <div><label class="fld">起床时间</label><input type="text" id="dl-wake" placeholder="700 / 07:00" onblur="normTime(this)">
+    <div class="qchips"><span class="qchip" onclick="setTime('dl-wake','06:30')">06:30</span><span class="qchip" onclick="setTime('dl-wake','07:00')">07:00</span><span class="qchip" onclick="setTime('dl-wake','07:30')">07:30</span><span class="qchip" onclick="setTime('dl-wake','08:00')">08:00</span></div></div>
    <div><label class="fld">夜间醒来次数</label><input type="number" id="dl-nw" min="0" max="10" value="0"></div>
   </div>
   <div class="grid3" style="margin-top:10px">
@@ -135,22 +158,9 @@ ul.steps li{margin:4px 0;}
    <label class="hb"><input type="checkbox" id="hb-ex">运动</label>
    <label class="hb"><input type="checkbox" id="hb-cards">背卡</label>
   </div>
-  <div class="grid3" style="margin-top:10px">
-   <div><label class="fld">运动类型</label><input type="text" id="ex-type" placeholder="游泳/慢跑/力量/羽毛球…"></div>
-   <div><label class="fld">时长（分钟）</label><input type="number" id="ex-min" min="0"></div>
+  <div class="grid2" style="margin-top:10px">
+   <div><label class="fld">有氧时长（分钟）</label><input type="number" id="ex-min" min="0"></div>
    <div><label class="fld">平均心率</label><input type="number" id="ex-hr" min="0" placeholder="手环数据，可留空"></div>
-  </div>
- </div>
- <div class="card">
-  <h2>前瞻记忆 · 捕捉计数</h2>
-  <p class="desc">10秒内记进系统的"待会儿要做"＝捕捉成功；事后靠回忆发现的漏项＝遗漏。只记任务类，不记"随手就回"的事。</p>
-  <div class="capbtns" style="margin-top:10px">
-   <button class="cap hit" onclick="capDelta('hit',1)">捕捉成功 +1</button>
-   <span class="capnum" id="cap-hit-n" style="color:var(--ok)">0</span>
-   <button class="cap hit" style="padding:4px 8px" onclick="capDelta('hit',-1)">−1</button>
-   <button class="cap miss" onclick="capDelta('miss',1)">遗漏发现 +1</button>
-   <span class="capnum" id="cap-miss-n" style="color:var(--bad)">0</span>
-   <button class="cap miss" style="padding:4px 8px" onclick="capDelta('miss',-1)">−1</button>
   </div>
  </div>
  <div class="card">
@@ -169,7 +179,74 @@ ul.steps li{margin:4px 0;}
   </div>
   <p class="hint">规约：每天固定时间做一次、顺序固定、设备尽量一致。前5–7次的成绩上升主要是练习效应，趋势分析从第8天起看。</p>
  </div>
+ <div class="card">
+  <h2>数字广度训练 · 组块练习</h2>
+  <p class="desc">核心技能：把一串数字装成3位一组的"单元"（工作记忆容量≈4个组块，扩容靠单元定义）。展示时组间有节奏停顿，占位框显示每个数字在组块中的位置。不计入当日成绩。</p>
+  <div class="rowline" style="margin-top:10px">
+   <div class="qchips" id="train-groups">
+    <span class="qchip" onclick="trainSet('groups',2,this)">2组×3位</span>
+    <span class="qchip sel" onclick="trainSet('groups',3,this)">3组×3位</span>
+    <span class="qchip" onclick="trainSet('groups',4,this)">4组×3位</span>
+    <span class="qchip" onclick="trainSet('groups',5,this)">5组×3位</span>
+   </div>
+   <div class="qchips" id="train-dir">
+    <span class="qchip sel" onclick="trainSet('back',false,this)">顺背</span>
+    <span class="qchip" onclick="trainSet('back',true,this)">倒背</span>
+   </div>
+   <button class="btn primary sm" onclick="startTrain()">开始练习</button>
+  </div>
+  <div id="train-stage"></div>
+  <p class="hint">方法提醒：默念"472—913—586"三拍而不是九个数字连读；给组块挂锚（你脑子里的137、511、1550）；检索时允许自己慢慢重建，费力重建正是加深编码。</p>
+ </div>
  <div id="test-stage"></div>
+</div>
+
+<div id="page-read" class="page">
+ <div id="read-alert"></div>
+ <div class="card">
+  <div class="rowline"><h2>限时阅读 · 今日练习</h2><span class="desc" id="rd-today-state">未开始</span></div>
+  <p class="desc">本页<b>没有内置材料</b>——贴入一段今天本来就要读的东西即可（建议600–1000字）。工作相关（激光器/光放大器/光通信/光网络的论文、技术文档、行业新闻）或生活领域（金融/健康/科技）都可以。流程：限时读 → 合卷写要点 → 对照自评，共约8分钟；次日延迟回忆约3分钟。建议睡前1–2小时做（过夜巩固最好）。</p>
+  <textarea id="rd-material" rows="5" placeholder="把材料粘贴到这里（建议先贴到记事本去掉格式）…"></textarea>
+  <div class="qchips" style="margin-top:8px">
+   <span class="qchip" onclick="rdTag('工作相关',this)">工作相关（激光/光放大/光通信/光网络）</span>
+   <span class="qchip" onclick="rdTag('金融',this)">金融</span>
+   <span class="qchip" onclick="rdTag('健康',this)">健康</span>
+   <span class="qchip" onclick="rdTag('科技',this)">科技</span>
+   <span class="qchip" onclick="rdTag('政策',this)">政策</span>
+   <span class="qchip" onclick="rdTag('英语材料',this)">英语材料</span>
+  </div>
+  <div class="grid2" style="margin-top:10px">
+   <div><label class="fld">限时阅读</label>
+    <select id="rd-readmin"><option value="120">2 分钟</option><option value="180" selected>3 分钟</option><option value="300">5 分钟</option></select></div>
+   <div><label class="fld">合卷写要点</label>
+    <select id="rd-writemin"><option value="120">2 分钟</option><option value="180" selected>3 分钟</option></select></div>
+  </div>
+  <div class="btnrow" style="justify-content:flex-start;margin-top:12px">
+   <button class="btn primary" onclick="startRead()">开始限时阅读</button>
+  </div>
+  <p class="hint">三项指标：要点数＝提取能力 · 自评覆盖率＝理解质量 · 次日回忆数＝巩固率。看周趋势，别看单日。<br>取材建议——工作类：OFC/ECOC/JLT摘要段、行业新闻（Optics.org/C114/LightCounting）、自家技术文档段落；生活类：新闻APP的财经/健康/科技版块任取一段。<b>同一材料只用一次</b>：读第二遍会污染延迟回忆数据。</p>
+ </div>
+ <div class="card">
+  <h2>备料箱</h2>
+  <p class="desc">没有现成材料的日子从这里取。批量存入：多篇材料之间用<b>单独一行 ===</b> 分隔，一次可贴10篇；每批选一个领域标签。取用后自动标记消耗，不会重复使用。</p>
+  <textarea id="inbox-batch" rows="3" placeholder="材料1……&#10;===&#10;材料2……"></textarea>
+  <div class="qchips" style="margin-top:8px" id="inbox-tag">
+   <span class="qchip sel" onclick="inboxTagSet('工作相关',this)">工作相关</span>
+   <span class="qchip" onclick="inboxTagSet('金融',this)">金融</span>
+   <span class="qchip" onclick="inboxTagSet('健康',this)">健康</span>
+   <span class="qchip" onclick="inboxTagSet('科技',this)">科技</span>
+   <span class="qchip" onclick="inboxTagSet('政策',this)">政策</span>
+   <span class="qchip" onclick="inboxTagSet('英语材料',this)">英语材料</span>
+  </div>
+  <div class="btnrow" style="justify-content:flex-start;margin-top:8px">
+   <button class="btn" onclick="rdInboxAdd()">存入本批</button>
+   <button class="btn" onclick="syncMaterials()">⟳ 从素材库同步</button>
+   <button class="btn primary" onclick="rdInboxPull()">取下一篇 → 填入上方</button>
+   <span class="desc" id="inbox-count">剩余 0 篇</span>
+  </div>
+  <p class="hint">全自动流程：GitHub Actions每天定时抓取RSS（政策/金融/健康/科技/光通信/英语）→ 调用大模型API清洗成600–1000字材料 → 提交materials.json到仓库。你在本页点"⟳ 从素材库同步"即可拉取。手动粘贴仍是备胎：AI助手聊天里喊"备料"也行。</p>
+ </div>
+ <div id="read-stage"></div>
 </div>
 
 <div id="page-mind" class="page">
@@ -210,40 +287,32 @@ ul.steps li{margin:4px 0;}
   <div class="chartblock"><h4>2-back 命中率（%，越高越好）</h4><canvas id="c-nback" width="980" height="200"></canvas></div>
   <div class="chartblock"><h4>数字广度（位，实线＝顺背，绿线＝倒背）</h4><canvas id="c-digit" width="980" height="200"></canvas></div>
   <div class="chartblock"><h4>划消找到率（%，找到/28个目标）</h4><canvas id="c-cancel" width="980" height="200"></canvas></div>
-  <div class="chartblock"><h4>捕捉率（%，捕捉/(捕捉+遗漏)）</h4><canvas id="c-cap" width="980" height="200"></canvas></div>
+  <div class="chartblock"><h4>阅读要点数（蓝＝当日要点，绿＝次日回忆条数）</h4><canvas id="c-read" width="980" height="200"></canvas></div>
  </div>
  <div class="card"><h2>睡眠 → 次日认知 相关性（Pearson r）</h2>
   <p class="desc">昨晚睡眠（时长/质量） vs 今日各测试成绩。≥20个数据点（约4周）后 r 才值得看；前7天的练习效应会稀释相关。</p>
   <div id="corr-table" style="margin-top:10px"></div>
  </div>
-</div>
-
-<div id="page-data" class="page">
- <div class="card"><h2>导出 / 备份</h2>
-  <p class="desc">数据只存在这台电脑、这个浏览器的 localStorage 里（不要用隐私/无痕模式打开本页）。请每周导出一次备份——浏览器清理、换电脑、换浏览器都会丢数据。</p>
+ <div class="card"><h2>数据管理</h2>
+  <p class="desc">数据只存在这台电脑、这个浏览器的 localStorage 里（不要用无痕模式打开）。每周日导出一次备份——浏览器清理、换电脑、换浏览器都会丢数据。升级版本前先"导出 JSON"一份。</p>
   <div class="btnrow" style="justify-content:flex-start;margin-top:10px">
    <button class="btn primary" onclick="exportCSV()">导出 CSV</button>
    <button class="btn" onclick="exportJSON()">导出 JSON</button>
    <button class="btn" onclick="document.getElementById('import-file').click()">导入 JSON</button>
    <input type="file" id="import-file" accept=".json,application/json" style="display:none" onchange="importJSON(this)">
+   <button class="btn danger" onclick="clearAll()">清空全部</button>
   </div>
- </div>
- <div class="card"><h2>设置</h2>
-  <div class="grid2">
-   <div><label class="fld">建议测试时间（仅作提醒显示）</label><input type="time" id="set-testtime" onchange="saveSettings()"></div>
+  <div class="grid2" style="margin-top:12px">
+   <div><label class="fld">建议测试时间（提醒显示用）</label><input type="time" id="set-testtime" onchange="saveSettings()"></div>
   </div>
- </div>
- <div class="card"><h2>危险区</h2>
-  <p class="desc">清空全部本地数据，不可恢复（请先导出备份）。</p>
-  <button class="btn danger" style="margin-top:8px" onclick="clearAll()">清空全部数据</button>
  </div>
  <div class="card"><h2>使用说明</h2>
   <ul class="steps">
-   <li><b>每天一次</b>：上午固定时间（建议9:00美式之后、正式工作前）完成"认知测试"4项（周一6项）。</li>
-   <li>测试后回"今日打卡"补睡眠/情绪/习惯（也可随时填，日期可选回去补记）。</li>
-   <li>正念从"正念"标签计时，完成自动打卡。</li>
-   <li>每周末看"趋势"：先看依从性，再看7日均线，4周后再看相关性表。</li>
-   <li>解读纪律：单日波动是噪声；别用单次成绩评判自己；前后对比要看同一设备、同一时段。</li>
+   <li><b>上午</b>：固定时段（建议9:00美式后半小时内）完成认知测试，周一6项。</li>
+   <li><b>中午</b>：午餐 → 散步 → 正念10min → 有氧20–30min（心率115–135）。</li>
+   <li><b>晚上</b>：睡前1–2小时做限时阅读（约8分钟）；<b>次日任意时间</b>做延迟回忆（约3分钟）。</li>
+   <li><b>周日</b>：看回顾——先看绿格子依从性，再看7日均线，导出一次CSV备份；4周后再看相关性表。</li>
+   <li><b>纪律</b>：单日是噪声看均线；前7天有练习效应；固定同一入口URL；测试前不做有氧运动。</li>
   </ul>
  </div>
 </div>
@@ -280,14 +349,16 @@ function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show')
 /* ============ 导航 ============ */
 function showTab(name){
  if(RUN.active&&name!=='test'){clearAllTimers();RUN.active=false;currentKeyHandler=null;$('test-stage').innerHTML='';}
+ if(TR.active&&name!=='test'){clearAllTimers();TR.active=false;if($('train-stage'))$('train-stage').innerHTML='';}
+ if(RD.active&&name!=='read'){clearAllTimers();RD.active=false;if(RD.iv)clearInterval(RD.iv);if($('read-stage'))$('read-stage').innerHTML='';}
  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
  $('page-'+name).classList.add('active');
  document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));
  if(name==='daily')loadDailyForm();
  if(name==='test')renderBattery();
- if(name==='trend')renderTrends();
+ if(name==='read')renderRead();
+ if(name==='trend'){renderTrends();$('set-testtime').value=DB.settings.testTime||'09:30';}
  if(name==='mind')mindPreset();
- if(name==='data')$('set-testtime').value=DB.settings.testTime||'09:30';
 }
 /* ============ 头部/杂项 ============ */
 function durHours(bed,wake){if(!bed||!wake)return null;const p=s=>s.split(':').map(Number);const [bh,bm]=p(bed),[wh,wm]=p(wake);let m=(wh*60+wm)-(bh*60+bm);if(m<=0)m+=1440;return +(m/60).toFixed(2);}
@@ -318,29 +389,39 @@ function loadDailyForm(){
  const h=r.habits||{};
  $('hb-supp').checked=!!h.supp;$('hb-mind').checked=!!h.mind;$('hb-ex').checked=!!h.ex;$('hb-cards').checked=!!h.cards;
  const ex=r.exercise||{};
- $('ex-type').value=ex.type||'';$('ex-min').value=ex.min!=null&&ex.min!==0?ex.min:'';$('ex-hr').value=ex.hr!=null&&ex.hr!==0?ex.hr:'';
+ $('ex-min').value=ex.min!=null&&ex.min!==0?ex.min:'';$('ex-hr').value=ex.hr!=null&&ex.hr!==0?ex.hr:'';
  $('dl-notes').value=r.notes||'';
- renderCapture();updateDur();
+ updateDur();
 }
 function updateDur(){const v=durHours($('dl-bed').value,$('dl-wake').value);$('dl-dur').textContent=(v===null||v===undefined)?'—':v+' h';}
+function parseTimeStr(s){
+ if(!s)return null;
+ let v=String(s).replace(/\D/g,'');
+ if(!v)return null;
+ if(v.length===1||v.length===2){
+  if(v.length===1)v='0'+v;
+  if(+v<24)return v+':00';return null;
+ }
+ if(v.length===3)v='0'+v;
+ if(v.length===4){const h=+v.slice(0,2),m=+v.slice(2);if(h<24&&m<60)return v.slice(0,2)+':'+v.slice(2);}
+ return null;
+}
+function normTime(inp){
+ const raw=inp.value;const t=parseTimeStr(raw);
+ inp.value=t||'';
+ if(raw&&!t)toast('时间没识别，示例：2330 / 23:30 / 730');
+ updateDur();
+}
+function setTime(id,val){$(id).value=val;updateDur();}
 function saveDaily(){
  const key=$('dl-date').value||todayKey();const rec=dayRec(key);
- rec.sleep={bed:$('dl-bed').value,wake:$('dl-wake').value,nightWake:Number($('dl-nw').value||0),quality:starsVal('dl-qual')};
+ const bedV=parseTimeStr($('dl-bed').value),wakeV=parseTimeStr($('dl-wake').value);
+ rec.sleep={bed:bedV||$('dl-bed').value,wake:wakeV||$('dl-wake').value,nightWake:Number($('dl-nw').value||0),quality:starsVal('dl-qual')};
  rec.mood={energy:starsVal('dl-energy'),mood:starsVal('dl-mood'),stress:starsVal('dl-stress')};
  rec.habits={supp:$('hb-supp').checked,mind:$('hb-mind').checked,ex:$('hb-ex').checked,cards:$('hb-cards').checked};
- rec.exercise={type:$('ex-type').value.trim(),min:Number($('ex-min').value||0),hr:Number($('ex-hr').value||0)||null};
+ rec.exercise={min:Number($('ex-min').value||0),hr:Number($('ex-hr').value||0)||null};
  rec.notes=$('dl-notes').value.trim();
  saveDB();updateHeader();toast('已保存 '+key);
-}
-function capDelta(k,d){
- const key=$('dl-date').value||todayKey();const rec=dayRec(key);
- rec.capture=rec.capture||{hit:0,miss:0};
- rec.capture[k]=Math.max(0,(rec.capture[k]||0)+d);
- saveDB();renderCapture();
-}
-function renderCapture(){
- const key=$('dl-date').value||todayKey();const r=getRec(key);const c=(r&&r.capture)||{hit:0,miss:0};
- $('cap-hit-n').textContent=c.hit||0;$('cap-miss-n').textContent=c.miss||0;
 }
 /* ============ 认知测试框架 ============ */
 const TESTDEFS={
@@ -625,6 +706,235 @@ function stopMind(finished){
   if($('page-daily').classList.contains('active'))loadDailyForm();
  }
 }
+/* ============ 数字广度训练（组块练习，不计入成绩） ============ */
+let TR={active:false,cfg:{groups:3,back:false}};
+function trainSet(k,v,el){TR.cfg[k]=v;el.parentNode.querySelectorAll('.qchip').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
+function startTrain(){
+ TR.active=true;
+ const g=TR.cfg.groups,n=g*3,seq=[];
+ for(let k=0;k<n;k++){let d;do{d=randInt(0,9);}while(k>0&&d===seq[k-1]);seq.push(d);}
+ TR.seq=seq;
+ const st=$('train-stage');st.innerHTML='';
+ st.appendChild(el('div','desc','展示 '+g+' 组 × 3 位数字，<b>组间有停顿</b>——用停顿把每3位切成一个单元。看完后'+(TR.cfg.back?'按<b>倒序</b>（从最后一位往前）':'按原顺序')+'输入。'));
+ const wrap=el('div','tgroups');
+ for(let i=0;i<g;i++){const gd=el('div','tgroup');for(let s=0;s<3;s++)gd.appendChild(el('div','slot',''));wrap.appendChild(gd);}
+ st.appendChild(wrap);
+ const go=el('button','btn primary','开始展示');go.style.cssText='display:block;margin:12px auto;';go.onclick=()=>present();st.appendChild(go);
+ function present(){
+  go.remove();
+  const slots=st.querySelectorAll('.slot');let idx=0;
+  (function step(){
+   if(idx>=n){later(ask,900);return;}
+   slots.forEach(s=>{if(s.classList.contains('cur')){s.classList.remove('cur');s.classList.add('dim');s.textContent='·';}});
+   const cur=slots[idx];cur.classList.add('cur');cur.textContent=String(seq[idx]);
+   later(()=>{idx++;step();},(idx%3===2)?1400:650);
+  })();
+ }
+ function ask(){
+  st.innerHTML='';
+  const c=el('div','card intro','<h3>输入你记住的数字</h3><div class="desc">'+(TR.cfg.back?'倒序（从最后一个往前写）':'按原顺序')+'</div>');
+  const inp=el('input','diginput');inp.setAttribute('inputmode','numeric');inp.maxLength=n;
+  const b=el('button','btn primary','核对');b.style.marginTop='10px';b.onclick=()=>check(inp.value);
+  c.appendChild(inp);c.appendChild(b);st.appendChild(c);inp.focus();
+ }
+ function check(v){
+  v=(v||'').replace(/\D/g,'');
+  const tgt=TR.cfg.back?seq.slice().reverse():seq;
+  let okG=0;
+  for(let i=0;i<g;i++){if(v.substr(i*3,3)===tgt.slice(i*3,i*3+3).join(''))okG++;}
+  st.innerHTML='';
+  const full=(v===tgt.join(''));
+  const c=el('div','card intro');
+  c.appendChild(el('h3','',full?'✓ 全对！':(okG>=g-1?'很接近：组块 '+okG+'/'+g:'组块正确 '+okG+'/'+g)));
+  const wrap2=el('div','tgroups');
+  for(let i=0;i<g;i++){const gd=el('div','tgroup');for(let s=0;s<3;s++){const sl=el('div','slot',String(tgt[i*3+s]));if(v.substr(i*3+s,1)!==String(tgt[i*3+s]))sl.classList.add('err');gd.appendChild(sl);}wrap2.appendChild(gd);}
+  c.appendChild(wrap2);
+  c.appendChild(el('div','desc','你的输入：'+(v||'（空）')+'　·　标红的位是错的'));
+  const again=el('button','btn primary','再练一组');again.style.marginTop='12px';again.onclick=()=>startTrain();
+  c.appendChild(again);st.appendChild(c);TR.active=false;ding(1);
+ }
+}
+/* ============ 限时阅读模块 ============ */
+let RD={active:false},rdTagVal='';
+function rdTag(t,elx){rdTagVal=t;elx.parentNode.querySelectorAll('.qchip').forEach(c=>c.classList.remove('sel'));elx.classList.add('sel');}
+function getReadRec(k){const r=getRec(k);return r&&r.reading?r.reading:null;}
+function pendingDelayKeys(){
+ const ks=sortedKeys(),today=todayKey(),out=[];
+ for(let i=ks.length-1;i>=0;i--){if(ks[i]>=today)continue;const rd=getReadRec(ks[i]);if(rd&&!rd.delayDone)out.push(ks[i]);}
+ return out;
+}
+function fmtMS(s){return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2);}
+function renderRead(){
+ const al=$('read-alert');
+ const pend=pendingDelayKeys();
+ if(pend.length){
+  const extra=pend.length>1?'（还有 '+(pend.length-1)+' 份待补）':'';
+  al.innerHTML='<div class="card"><div class="rowline"><div><b>延迟回忆待办</b> · '+pend[0]+' 的材料'+extra+'</div><button class="btn primary sm" onclick="startDelay(\''+pend[0]+'\')">开始（约3分钟）</button></div></div>';
+ }else al.innerHTML='';
+ const t=getReadRec(todayKey());
+ $('rd-today-state').textContent=t?('今日已完成：要点 '+t.nPoints+' 条 · 覆盖率 '+t.coverage+'%（重练会覆盖）'):'未开始';
+ renderInbox();
+}
+function startRead(){
+ const m=$('rd-material').value.trim();
+ if(m.length<60){toast('材料太短（<60字），训练效果差，建议贴长一点');return;}
+ let total=Number($('rd-readmin').value)||180;
+ RD={active:true,phase:'read',material:m,tag:rdTagVal||'未标注',readSec:0,t0:performance.now(),iv:null};
+ const st=$('read-stage');st.innerHTML='';
+ const c=el('div','card');
+ const timer=el('div','rdtimer');timer.id='rd-timer';timer.textContent=fmtMS(total);
+ const box=el('div','rdbox');box.textContent=m;
+ const row=el('div','btnrow');const fin=el('button','btn','提前读完，进入写要点');fin.onclick=()=>finishRead();
+ row.appendChild(fin);
+ c.appendChild(timer);c.appendChild(box);c.appendChild(row);
+ c.appendChild(el('p','hint','专注读。倒计时结束自动合卷。'));
+ st.appendChild(c);
+ RD.iv=setInterval(()=>{total--;const te=$('rd-timer');if(te)te.textContent=fmtMS(Math.max(0,total));if(total<=0)finishRead();},1000);
+ INTER.push(RD.iv);
+}
+function finishRead(){
+ if(!RD.active||RD.phase!=='read')return;
+ if(RD.iv)clearInterval(RD.iv);
+ RD.readSec=Math.round((performance.now()-RD.t0)/1000);
+ ding(1);RD.phase='write';RD.t0=performance.now();
+ let total=Number($('rd-writemin').value)||180;
+ const st=$('read-stage');st.innerHTML='';
+ const c=el('div','card');
+ const timer=el('div','rdtimer');timer.id='rd-timer';timer.textContent=fmtMS(total);
+ c.appendChild(timer);
+ c.appendChild(el('div','desc','<b>合卷！</b>凭记忆写要点，一行一条，能写多少写多少。'));
+ const ta=el('textarea');ta.id='rd-points';ta.rows=7;ta.style.marginTop='8px';
+ c.appendChild(ta);
+ const b=el('button','btn primary','完成');b.style.marginTop='10px';b.onclick=()=>finishWrite();
+ c.appendChild(b);st.appendChild(c);ta.focus();
+ RD.iv=setInterval(()=>{total--;const te=$('rd-timer');if(te)te.textContent=fmtMS(Math.max(0,total));if(total<=0)finishWrite();},1000);
+ INTER.push(RD.iv);
+}
+function finishWrite(){
+ if(!RD.active||RD.phase!=='write')return;
+ if(RD.iv)clearInterval(RD.iv);
+ RD.points=($('rd-points').value||'').split('\n').map(s=>s.trim()).filter(Boolean);
+ const st=$('read-stage');st.innerHTML='';
+ const c=el('div','card');
+ c.appendChild(el('h3','','对照自评（你写了 '+RD.points.length+' 条）'));
+ const cols=el('div','two-col');
+ const p1=el('div','pane');p1.appendChild(el('h5','','你写的要点'));const d1=el('div');d1.textContent=RD.points.join('\n')||'（空）';p1.appendChild(d1);
+ const p2=el('div','pane');p2.appendChild(el('h5','','原文（滚动对照，找漏掉的要点）'));const d2=el('div');d2.textContent=RD.material;p2.appendChild(d2);
+ cols.appendChild(p1);cols.appendChild(p2);c.appendChild(cols);
+ c.appendChild(el('label','fld','关键要点覆盖率（凭对照估）'));
+ const rg=el('input');rg.type='range';rg.id='rd-cov';rg.min=0;rg.max=100;rg.value=60;
+ rg.oninput=()=>{$('rd-cov-n').textContent=$('rd-cov').value+'%';};
+ c.appendChild(rg);
+ const cn=el('div','rdcount');cn.id='rd-cov-n';cn.textContent='60%';c.appendChild(cn);
+ const b=el('button','btn primary','保存今日阅读');b.style.marginTop='10px';b.onclick=saveRead;
+ c.appendChild(b);st.appendChild(c);
+ RD.phase='assess';
+}
+function saveRead(){
+ const cov=Number(($('rd-cov')&&$('rd-cov').value)||60);
+ const rec=dayRec(todayKey());
+ rec.reading={material:RD.material,tag:RD.tag,readSec:RD.readSec,points:RD.points,nPoints:RD.points.length,coverage:cov,delayDone:false};
+ saveDB();ding(2);
+ const summary='要点 '+RD.points.length+' 条 · 覆盖率 '+cov+'% · 读了 '+(Math.round(RD.readSec/6)/10)+' 分钟';
+ RD={active:false};
+ renderRead();
+ $('read-stage').innerHTML='<div class="bigmsg">✓ 今日阅读完成</div><div class="resline">'+summary+'<br>明天记得来做延迟回忆（约3分钟）</div>';
+}
+function startDelay(k){
+ const rd=getReadRec(k);if(!rd)return;
+ RD={active:true,phase:'delay',key:k,ref:rd,opened:false};
+ const st=$('read-stage');st.innerHTML='';
+ const c=el('div','card');
+ c.appendChild(el('h3','','延迟回忆 · '+k+' 的材料'));
+ c.appendChild(el('div','desc','<b>先别展开原文</b>——凭记忆写出还记得的要点，一行一条。'));
+ const ta=el('textarea');ta.id='dl-points';ta.rows=7;ta.style.marginTop='8px';c.appendChild(ta);
+ const row=el('div','btnrow');
+ const b=el('button','btn primary','完成');b.onclick=()=>finishDelay();
+ const b2=el('button','btn','实在想不起来，展开原文');b2.onclick=()=>{RD.opened=true;const o=$('dl-orig');if(o)o.style.display='';};
+ row.appendChild(b);row.appendChild(b2);c.appendChild(row);
+ const orig=el('div','pane');orig.id='dl-orig';orig.style.display='none';orig.style.marginTop='10px';
+ orig.textContent=rd.material;c.appendChild(orig);
+ st.appendChild(c);ta.focus();
+}
+function finishDelay(){
+ if(!RD.active||RD.phase!=='delay')return;
+ const pts=($('dl-points').value||'').split('\n').map(s=>s.trim()).filter(Boolean);
+ const rd=RD.ref;
+ const auto=rd.nPoints?Math.min(100,Math.round(pts.length/rd.nPoints*100)):0;
+ const st=$('read-stage');st.innerHTML='';
+ const c=el('div','card');
+ c.appendChild(el('h3','','对照 · 昨日要点 '+rd.nPoints+' 条 → 今日回忆 '+pts.length+' 条'+(RD.opened?'（中途看过原文，数据打折解读）':'')));
+ const cols=el('div','two-col');
+ const p1=el('div','pane');p1.appendChild(el('h5','','昨日写的要点'));const d1=el('div');d1.textContent=rd.points.join('\n');p1.appendChild(d1);
+ const p2=el('div','pane');p2.appendChild(el('h5','','今日回忆'));const d2=el('div');d2.textContent=pts.join('\n')||'（空）';p2.appendChild(d2);
+ cols.appendChild(p1);cols.appendChild(p2);c.appendChild(cols);
+ c.appendChild(el('label','fld','保持率（默认按条数比自动算，可修正）'));
+ const rg=el('input');rg.type='range';rg.id='dl-keep';rg.min=0;rg.max=100;rg.value=auto;
+ rg.oninput=()=>{$('dl-keep-n').textContent=$('dl-keep').value+'%';};
+ c.appendChild(rg);
+ const cn=el('div','rdcount');cn.id='dl-keep-n';cn.textContent=auto+'%';c.appendChild(cn);
+ const b=el('button','btn primary','保存延迟回忆');b.style.marginTop='10px';b.onclick=saveDelay;
+ c.appendChild(b);st.appendChild(c);
+ RD.phase='delaySave';RD.pts=pts;
+}
+function saveDelay(){
+ const keep=Number(($('dl-keep')&&$('dl-keep').value)||0);
+ const rd=RD.ref;const n=RD.pts.length;
+ rd.delayDone=true;rd.delayCount=n;rd.delayKeep=keep;rd.delayOpened=RD.opened;
+ saveDB();ding(2);
+ const msg='今日回忆 '+n+' 条 · 保持率 '+keep+'%';
+ RD={active:false};
+ renderRead();
+ $('read-stage').innerHTML='<div class="bigmsg">✓ 延迟回忆完成</div><div class="resline">'+msg+'</div>';
+}
+/* ============ 备料箱 ============ */
+let rdInboxTag='工作相关';
+function inboxTagSet(t,elx){rdInboxTag=t;elx.parentNode.querySelectorAll('.qchip').forEach(c=>c.classList.remove('sel'));elx.classList.add('sel');}
+function rdInboxAdd(){
+ const raw=$('inbox-batch').value.trim();
+ if(!raw){toast('先贴入材料');return;}
+ const parts=raw.split(/^\s*={3,}\s*$/m).map(s=>s.trim()).filter(s=>s.length>=60);
+ if(!parts.length){toast('没解析出有效材料（每篇至少60字，篇间用单独一行 === 分隔）');return;}
+ DB.settings.rdInbox=DB.settings.rdInbox||[];
+ parts.forEach(p=>DB.settings.rdInbox.push({tag:rdInboxTag,text:p,used:false}));
+ saveDB();$('inbox-batch').value='';
+ const left=DB.settings.rdInbox.filter(x=>!x.used).length;
+ renderInbox();toast('已存入 '+parts.length+' 篇，共剩 '+left+' 篇未用');
+}
+function rdInboxPull(){
+ DB.settings.rdInbox=DB.settings.rdInbox||[];
+ const m=DB.settings.rdInbox.find(x=>!x.used);
+ if(!m){toast('备料箱空了——找AI助手备料，或自己贴一段');return;}
+ m.used=true;saveDB();
+ $('rd-material').value=m.text;
+ rdTagVal=m.tag;
+ const tagRow=document.querySelector('#page-read .qchips');
+ if(tagRow){tagRow.querySelectorAll('.qchip').forEach(c=>c.classList.remove('sel'));const tgt=[].slice.call(tagRow.querySelectorAll('.qchip')).find(c=>c.textContent.indexOf(m.tag)===0);if(tgt)tgt.classList.add('sel');}
+ renderInbox();toast('已取出并填入，标签：'+m.tag+'。点"开始限时阅读"');
+}
+function renderInbox(){
+ const arr=(DB.settings&&DB.settings.rdInbox)||[];
+ const left=arr.filter(x=>!x.used).length;
+ if($('inbox-count'))$('inbox-count').textContent='剩余 '+left+' 篇';
+}
+function syncMaterials(){
+ fetch('materials.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}).then(d=>{
+  const arr=(d&&d.materials)||[];
+  if(!arr.length){toast('素材库是空的：先去仓库Actions里手动跑一次"自动备料"');return;}
+  DB.settings.rdInbox=DB.settings.rdInbox||[];
+  const known={};DB.settings.rdInbox.forEach(x=>{if(x.src)known[x.src]=1;});
+  let added=0;
+  arr.forEach(m=>{
+   const src=m.src||('t_'+(m.tag||'')+'_'+(m.title||'')+'_'+String(m.text||'').slice(0,20));
+   if(known[src])return;known[src]=1;
+   if(!m.text||m.text.length<200)return;
+   DB.settings.rdInbox.push({tag:m.tag||'未标注',text:m.text,src:src,used:false});
+   added++;
+  });
+  saveDB();renderInbox();
+  toast(added?('已同步 '+added+' 篇新料（重复已跳过）'):'素材库里没有新材料');
+ }).catch(()=>{toast('同步失败：需从GitHub Pages网址打开本页才能联网取料（本地file://不行）');});
+}
 /* ============ 趋势 ============ */
 function sortedKeys(){return Object.keys(DB.days).filter(k=>/^\d{4}-\d{2}-\d{2}$/.test(k)).sort();}
 function collect(metric){
@@ -638,7 +948,8 @@ function collect(metric){
   else if(metric==='digitF')v=(r.tests&&r.tests.digit)?r.tests.digit.fwd:null;
   else if(metric==='digitB')v=(r.tests&&r.tests.digit)?r.tests.digit.bwd:null;
   else if(metric==='cancel')v=(r.tests&&r.tests.cancel)?Math.round(r.tests.cancel.hit/r.tests.cancel.targets*100):null;
-  else if(metric==='cap'){const c=r.capture;if(c&&c.hit+c.miss>0)v=Math.round(c.hit/(c.hit+c.miss)*100);}
+  else if(metric==='readPts')v=(r.reading&&r.reading.nPoints)?r.reading.nPoints:null;
+  else if(metric==='delayPts')v=(r.reading&&r.reading.delayDone)?r.reading.delayCount:null;
   if(v!==null&&v!==undefined&&!isNaN(v))out.push({d:k,v:v});
  });
  return out;
@@ -748,7 +1059,7 @@ function renderTrends(){
  const m5=collect('digitF'),m5b=collect('digitB');
  drawChart('c-digit',m5,{roll:rolling(m5,7),fmt:'int',extra:{pts:m5b}});
  const m6=collect('cancel');drawChart('c-cancel',m6,{roll:rolling(m6,7)});
- const m7=collect('cap');drawChart('c-cap',m7,{roll:rolling(m7,7)});
+ const m8=collect('readPts');drawChart('c-read',m8,{roll:rolling(m8,7),fmt:'int',extra:{pts:collect('delayPts')}});
  renderCorr();
 }
 /* ============ 数据管理 ============ */
@@ -762,22 +1073,24 @@ function download(content,name,type){
 }
 function exportCSV(){
  const keys=sortedKeys();
- const head=['date','sleepBed','sleepWake','sleepDur','sleepQual','nightWake','energy','mood','stress','supp','mind','exDone','cards','exType','exMin','exHR','capHit','capMiss','srtMedian','srtSD','nbackAcc','nbackHits','nbackFA','nbackMiss','digitFwd','digitBwd','cancelHit','cancelTargets','cancelFalse','cancelTime','crtMedian','crtAcc','stroopAcc','stroopInterf','testDone'];
+ const head=['date','sleepBed','sleepWake','sleepDur','sleepQual','nightWake','energy','mood','stress','supp','mind','exDone','cards','exMin','exHR','srtMedian','srtSD','nbackAcc','nbackHits','nbackFA','nbackMiss','digitFwd','digitBwd','cancelHit','cancelTargets','cancelFalse','cancelTime','crtMedian','crtAcc','stroopAcc','stroopInterf','testDone','readTag','readSec','readPoints','readCov','delayPoints','delayKeep'];
  const rows=[head.join(',')];
  keys.forEach(k=>{
-  const r=DB.days[k];const t=r.tests||{},s=r.sleep||{},m=r.mood||{},h=r.habits||{},e=r.exercise||{},c=r.capture||{};
+  const r=DB.days[k];const t=r.tests||{},s=r.sleep||{},m=r.mood||{},h=r.habits||{},e=r.exercise||{},d=r.reading||{};
   rows.push([
    k,s.bed||'',s.wake||'',(durHours(s.bed,s.wake)!=null?durHours(s.bed,s.wake):''),s.quality||'',s.nightWake!=null?s.nightWake:'',
    m.energy||'',m.mood||'',m.stress||'',
    h.supp?'1':'0',h.mind?'1':'0',h.ex?'1':'0',h.cards?'1':'0',
-   e.type?esc(e.type):'',e.min||'',e.hr||'',c.hit||0,c.miss||0,
+   e.min||'',e.hr||'',
    t.srt?t.srt.median:'',t.srt?t.srt.sd:'',
    t.nback?t.nback.acc:'',t.nback?t.nback.hits:'',t.nback?t.nback.fa:'',t.nback?t.nback.miss:'',
    t.digit?t.digit.fwd:'',t.digit?t.digit.bwd:'',
    t.cancel?t.cancel.hit:'',t.cancel?t.cancel.targets:'',t.cancel?t.cancel.false:'',t.cancel?t.cancel.timeUsed:'',
    t.crt?t.crt.median:'',t.crt?t.crt.acc:'',
    t.stroop?t.stroop.acc:'',(t.stroop&&t.stroop.interference!=null)?t.stroop.interference:'',
-   t.testDone?'1':'0'
+   t.testDone?'1':'0',
+   d.tag||'',d.readSec||'',d.nPoints||'',d.coverage||'',
+   d.delayDone?d.delayCount:'',d.delayDone?d.delayKeep:''
   ].join(','));
  });
  download('\ufeff'+rows.join('\n'),'BrainLab_'+todayKey()+'.csv','text/csv');
