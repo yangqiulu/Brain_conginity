@@ -26,7 +26,7 @@ jobs:
           MATERIALS_API_KEY: ${{ secrets.MATERIALS_API_KEY }}
           MATERIALS_API_BASE: ${{ secrets.MATERIALS_API_BASE }}
           MATERIALS_MODEL: ${{ secrets.MATERIALS_MODEL }}
-        run: python scripts/fetch_materials.py
+        run: python fetch_materials.py
       - name: 提交 materials.json
         run: |
           git config user.name "materials-bot"
