@@ -1,0 +1,40 @@
+# 自动备料：每天定时抓取RSS → 大模型清洗 → materials.json提交回仓库
+# 安装位置：仓库根目录下 .github/workflows/materials.yml
+# 需在仓库 Settings → Secrets and variables → Actions 添加 secret：
+#   MATERIALS_API_KEY  = 你的大模型API密钥（必填）
+#   MATERIALS_API_BASE = API地址（选填，默认 https://api.deepseek.com）
+#   MATERIALS_MODEL    = 模型名（选填，默认 deepseek-chat）
+name: 自动备料
+on:
+  schedule:
+    - cron: '0 22 * * *'   # 每天 UTC 22:00 = 北京时间 06:00
+  workflow_dispatch: {}     # 支持在Actions页面手动触发（首次测试用）
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests feedparser trafilatura
+      - name: 抓取并清洗材料
+        env:
+          MATERIALS_API_KEY: ${{ secrets.MATERIALS_API_KEY }}
+          MATERIALS_API_BASE: ${{ secrets.MATERIALS_API_BASE }}
+          MATERIALS_MODEL: ${{ secrets.MATERIALS_MODEL }}
+        run: python scripts/fetch_materials.py
+      - name: 提交 materials.json
+        run: |
+          git config user.name "materials-bot"
+          git config user.email "actions@github.com"
+          git add materials.json
+          if git diff --cached --quiet; then
+            echo "没有新料，跳过提交"
+          else
+            git commit -m "chore: 自动备料 $(date -u +%F)"
+            git push
+          fi
