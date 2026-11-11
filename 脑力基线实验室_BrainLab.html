@@ -207,6 +207,7 @@ ul.steps li{margin:4px 0;}
   <div class="rowline"><h2>限时阅读 · 今日练习</h2><span class="desc" id="rd-today-state">未开始</span></div>
   <p class="desc">本页<b>没有内置材料</b>——贴入一段今天本来就要读的东西即可（建议600–1000字）。工作相关（激光器/光放大器/光通信/光网络的论文、技术文档、行业新闻）或生活领域（金融/健康/科技）都可以。流程：限时读 → 合卷写要点 → 对照自评，共约8分钟；次日延迟回忆约3分钟。建议睡前1–2小时做（过夜巩固最好）。</p>
   <textarea id="rd-material" rows="5" placeholder="把材料粘贴到这里（建议先贴到记事本去掉格式）…"></textarea>
+  <div class="hint" id="rd-src-line" style="display:none"></div>
   <div class="qchips" style="margin-top:8px">
    <span class="qchip" onclick="rdTag('工作相关',this)">工作相关（激光/光放大/光通信/光网络）</span>
    <span class="qchip" onclick="rdTag('金融',this)">金融</span>
@@ -242,6 +243,7 @@ ul.steps li{margin:4px 0;}
    <button class="btn" onclick="rdInboxAdd()">存入本批</button>
    <button class="btn" onclick="syncMaterials()">⟳ 从素材库同步</button>
    <button class="btn primary" onclick="rdInboxPull()">取下一篇 → 填入上方</button>
+   <button class="btn danger sm" onclick="rdInboxClear()">清空备料箱</button>
    <span class="desc" id="inbox-count">剩余 0 篇</span>
   </div>
   <p class="hint">全自动流程：GitHub Actions每天定时抓取RSS（政策/金融/健康/科技/光通信/英语）→ 调用大模型API清洗成600–1000字材料 → 提交materials.json到仓库。你在本页点"⟳ 从素材库同步"即可拉取。手动粘贴仍是备胎：AI助手聊天里喊"备料"也行。</p>
@@ -779,7 +781,10 @@ function startRead(){
  const m=$('rd-material').value.trim();
  if(m.length<60){toast('材料太短（<60字），训练效果差，建议贴长一点');return;}
  let total=Number($('rd-readmin').value)||180;
- RD={active:true,phase:'read',material:m,tag:rdTagVal||'未标注',readSec:0,t0:performance.now(),iv:null};
+ const sl=$('rd-src-line');
+ let rsrc='',rtitle='';
+ if(sl&&sl.style.display!=='none'&&sl.getAttribute('data-text')===m){rsrc=sl.getAttribute('data-src')||'';rtitle=sl.getAttribute('data-title')||'';}
+ RD={active:true,phase:'read',material:m,tag:rdTagVal||'未标注',readSec:0,t0:performance.now(),iv:null,src:rsrc,title:rtitle};
  const st=$('read-stage');st.innerHTML='';
  const c=el('div','card');
  const timer=el('div','rdtimer');timer.id='rd-timer';timer.textContent=fmtMS(total);
@@ -833,7 +838,7 @@ function finishWrite(){
 function saveRead(){
  const cov=Number(($('rd-cov')&&$('rd-cov').value)||60);
  const rec=dayRec(todayKey());
- rec.reading={material:RD.material,tag:RD.tag,readSec:RD.readSec,points:RD.points,nPoints:RD.points.length,coverage:cov,delayDone:false};
+ rec.reading={material:RD.material,tag:RD.tag,readSec:RD.readSec,points:RD.points,nPoints:RD.points.length,coverage:cov,delayDone:false,src:RD.src||'',title:RD.title||''};
  saveDB();ding(2);
  const summary='要点 '+RD.points.length+' 条 · 覆盖率 '+cov+'% · 读了 '+(Math.round(RD.readSec/6)/10)+' 分钟';
  RD={active:false};
@@ -864,6 +869,7 @@ function finishDelay(){
  const st=$('read-stage');st.innerHTML='';
  const c=el('div','card');
  c.appendChild(el('h3','','对照 · 昨日要点 '+rd.nPoints+' 条 → 今日回忆 '+pts.length+' 条'+(RD.opened?'（中途看过原文，数据打折解读）':'')));
+ if(rd.src){const stt=String(rd.title||rd.src).replace(/</g,'&lt;');c.appendChild(el('div','hint','原文来源：<a href="'+rd.src+'" target="_blank" style="color:var(--p-deep)">'+stt+'</a>'));}
  const cols=el('div','two-col');
  const p1=el('div','pane');p1.appendChild(el('h5','','昨日写的要点'));const d1=el('div');d1.textContent=rd.points.join('\n');p1.appendChild(d1);
  const p2=el('div','pane');p2.appendChild(el('h5','','今日回忆'));const d2=el('div');d2.textContent=pts.join('\n')||'（空）';p2.appendChild(d2);
@@ -908,9 +914,22 @@ function rdInboxPull(){
  m.used=true;saveDB();
  $('rd-material').value=m.text;
  rdTagVal=m.tag;
+ const sl=$('rd-src-line');
+ if(m.src){
+  sl.style.display='';
+  sl.setAttribute('data-src',m.src);
+  sl.setAttribute('data-title',m.title||'');
+  sl.setAttribute('data-text',m.text);
+  const t=String(m.title||m.src).replace(/</g,'&lt;');
+  sl.innerHTML='来源：<a href="'+m.src+'" target="_blank" style="color:var(--p-deep)">'+t+'</a>';
+ }else{sl.style.display='none';}
  const tagRow=document.querySelector('#page-read .qchips');
  if(tagRow){tagRow.querySelectorAll('.qchip').forEach(c=>c.classList.remove('sel'));const tgt=[].slice.call(tagRow.querySelectorAll('.qchip')).find(c=>c.textContent.indexOf(m.tag)===0);if(tgt)tgt.classList.add('sel');}
  renderInbox();toast('已取出并填入，标签：'+m.tag+'。点"开始限时阅读"');
+}
+function rdInboxClear(){
+ if(!confirm('确定清空备料箱？（包括已消耗标记在内的全部库存都会清除）'))return;
+ DB.settings.rdInbox=[];saveDB();renderInbox();toast('备料箱已清空');
 }
 function renderInbox(){
  const arr=(DB.settings&&DB.settings.rdInbox)||[];
@@ -928,7 +947,7 @@ function syncMaterials(){
    const src=m.src||('t_'+(m.tag||'')+'_'+(m.title||'')+'_'+String(m.text||'').slice(0,20));
    if(known[src])return;known[src]=1;
    if(!m.text||m.text.length<200)return;
-   DB.settings.rdInbox.push({tag:m.tag||'未标注',text:m.text,src:src,used:false});
+   DB.settings.rdInbox.push({tag:m.tag||'未标注',text:m.text,src:src,title:m.title||'',used:false});
    added++;
   });
   saveDB();renderInbox();
@@ -1073,7 +1092,7 @@ function download(content,name,type){
 }
 function exportCSV(){
  const keys=sortedKeys();
- const head=['date','sleepBed','sleepWake','sleepDur','sleepQual','nightWake','energy','mood','stress','supp','mind','exDone','cards','exMin','exHR','srtMedian','srtSD','nbackAcc','nbackHits','nbackFA','nbackMiss','digitFwd','digitBwd','cancelHit','cancelTargets','cancelFalse','cancelTime','crtMedian','crtAcc','stroopAcc','stroopInterf','testDone','readTag','readSec','readPoints','readCov','delayPoints','delayKeep'];
+ const head=['date','sleepBed','sleepWake','sleepDur','sleepQual','nightWake','energy','mood','stress','supp','mind','exDone','cards','exMin','exHR','srtMedian','srtSD','nbackAcc','nbackHits','nbackFA','nbackMiss','digitFwd','digitBwd','cancelHit','cancelTargets','cancelFalse','cancelTime','crtMedian','crtAcc','stroopAcc','stroopInterf','testDone','readTag','readTitle','readSrc','readSec','readPoints','readCov','delayPoints','delayKeep'];
  const rows=[head.join(',')];
  keys.forEach(k=>{
   const r=DB.days[k];const t=r.tests||{},s=r.sleep||{},m=r.mood||{},h=r.habits||{},e=r.exercise||{},d=r.reading||{};
@@ -1089,7 +1108,7 @@ function exportCSV(){
    t.crt?t.crt.median:'',t.crt?t.crt.acc:'',
    t.stroop?t.stroop.acc:'',(t.stroop&&t.stroop.interference!=null)?t.stroop.interference:'',
    t.testDone?'1':'0',
-   d.tag||'',d.readSec||'',d.nPoints||'',d.coverage||'',
+   d.tag||'',d.title?esc(d.title):'',d.src?esc(d.src):'',d.readSec||'',d.nPoints||'',d.coverage||'',
    d.delayDone?d.delayCount:'',d.delayDone?d.delayKeep:''
   ].join(','));
  });
