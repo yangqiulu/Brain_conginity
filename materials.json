@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-23T02:07:55Z",
+ "updated": "2026-11-24T05:42:47Z",
  "materials": [
   {
    "tag": "政策",
@@ -180,30 +180,44 @@
    "title": "Anthropic公司或許已解決重大數學難題：黎曼猜想",
    "src": "https://www.bbc.com/zhongwen/articles/cwe85gr487dno/simp?at_medium=RSS&at_campaign=rss",
    "text": "Anthropic公司或许已解决重大数学难题：黎曼猜想\n  - Author, 卡莉·海斯 （Kali Hays）\n  - Role, BBC 科技记者\n  - Reporting from, 旧金山\n- Published\n- 阅读时间: 2 分钟\n在人工智能接连解决数学问题的一年里，一名Anthropic员工表示，他可能已破解了数学界最重大的难题之一。\n一名Anthropic员工兼数学家声称，他使用公司的人工智能聊天机器人，证明了著名的黎曼猜想（Riemann hypothesis）。\n莱文特·阿尔波格（Levent Alpöge）在上周五表示，就在Anthropic于美国股市上市的隔天，他花了大约六周时间，使用Claude聊天机器人，为这个数学问题建立起详细的证明。\n如果证明正确，这将是史上最重大的成就之一。\n阿尔波格形容这是“科学界某件更伟大事物的黎明”。他补充说，这套方法不仅可证明黎曼猜想，还能进一步解决被称为广义黎曼猜想（Generalized Riemann Hypothesis）的更大范围问题。\n此外，这项宣称出现之际，OpenAI等AI公司近月来陆续宣布，已解决多项困扰学者数十年的高等数学难题。至于上周五提出的黎曼猜想证明，是使用Anthropic尚未公开的Claude版本完成的。\n黎曼猜想是一道已有近170年历史的数学问题，探讨质数，并被广泛认为是数学领域最著名的单一难题，主要原因在于其高度复杂性。\n这个猜想以数学家伯恩哈德·黎曼（Bernhard Riemann）命名，主张质数在数线上具有确定的规律性。\n质数是高等数学的基石，因此相关突破往往具有广泛影响。\n阿尔波格表示，他在上周日传讯给Anthropic执行长达里奥·阿莫迪（Dario Amodei），直接询问该如何宣布这项发现。\n“时机实在太糟了，”阿尔波格说，指的是Anthropic刚完成公开上市。他又说：“如果可以的话，我早就把这件事做完了。我显然要为自己无法再等下去的心情负完全责任。外界对时机有明显的犬儒看法，但那是错的。”\n阿尔波格目前公布的是以Lean（一种用于验证数学证明的电脑语言）撰写的证明。他估计，若把证明以人类可读的文字完整写下，篇幅将超过25万页。\n对此，知名数学家陶哲轩（Terence Tao）在上周五表示，验证这项证明仍需时日。陶哲轩说：“我想像消化过程会需要一些时间，不过至少这次有人类作者可以沟通，协助这项工作。”\n事实上，今年稍早使用AI完成的其他重大数学证明中，显然并未有这样的人类作者参与。OpenAI在9月曾宣称，员工使用尚未公开的AI工具，仅花88小时就解决了一道出了名困难的问题的一部分。\n该问题与纳维-斯托克斯方程（Navier-Stokes equations）有关，探讨流体如何运动。超过1万个AI代理（以一定程度自主运作的电脑程式机器人）被投入这项工作，作为AI训练练习。\n此外，OpenAI发布的纳维-斯托克斯相关证明尚未被确认为正确，并在学术界与高等数学社群中引发了对使用AI解决数学问题的批评。\nAnthropic也宣称在数学与物理领域取得了其他进展与解法。\n不过，一群数学学者表示，AI公司大肆宣扬重大解法以展示其商业产品多么先进，对“数学科学有害”。“我们正目睹对智力工作的普遍威胁，AI使用结果与其最初目的之间出现了错位，”这些学者在一封联名信中写道。\n一个月后，OpenAI又发布了声称对另外372道未解高等数学问题的解法、证明或重大进展。这些宣称需要数月甚至更长时间，才能由专家审核以确认其有效性。\n本文原以英文撰写，我们使用了……"
+  },
+  {
+   "tag": "政策",
+   "title": "Nvidia和黃仁勳對美國經濟有多重要？",
+   "src": "https://www.bbc.com/zhongwen/articles/cvwy0jx7nj84o/simp?at_medium=RSS&at_campaign=rss",
+   "text": "Nvidia和黄仁勋对美国经济有多重要？\n  - Author, 迈克尔·雷斯（Michael Race）\n  - Role, BBC商业记者\n- Published\n- 阅读时间: 3 分钟\n英伟达（Nvidia，辉达）及其联合创办人黄仁勋，一直是人工智能（AI）投资热潮的核心。\n近年来，在推动人工智能发展方面，恐怕没有任何一家公司或执行长的影响力能与英伟达及黄仁勋相比。在黄仁勋的领导下，这家美国晶片制造商已成为推动这项足以改变世界的技术发展不可或缺的一环。\n正因为英伟达处于如此关键的地位，黄仁勋在婚外情曝光后离职，引发外界关注他对整个人工智能产业及美国经济究竟有多重要。\n然而，黄仁勋离职仅11天，英伟达董事会便改变决定，让他重返执行长岗位，显示公司高层认为他无可取代。\n黄仁勋意外复职的消息公布后，英伟达股价大幅上涨，扭转此前一段时间的急剧跌势。\n尽管英伟达不像苹果（Apple）、亚马逊（Amazon）和微软（Microsoft）等科技巨头那样家喻户晓，但这家公司对近年美国股市的蓬勃发展同样举足轻重。\n数以十亿美元计的资金涌入人工智能领域及数据中心建设，带动美国经济增长，而英伟达本身也是其中一个主要投资者。\n英伟达最初专注生产用于处理电脑游戏图像的晶片，后来转型制造人工智能系统使用的晶片，如今已在这个市场占据主导地位。\n英伟达目前是全球市值最高的企业之一。随着公司季度销售额较去年同期翻倍，其高速增长势头预料将持续。\n黄仁勋在公司发展过程中扮演关键角色，带领英伟达转向人工智能业务，同时牢牢掌握公司的管理权，直接向他汇报的员工多达200人。\n此前有消息揭露，黄仁勋曾与一名据称是中国间谍的女子发生婚外情，最终导致他离职。有人认为，他的离开可能对整个人工智能产业构成风险。\n原因是外界当时无法确定英伟达会否改变策略，并可能收紧投资开支。一旦如此，便可能对美国整体经济造成更广泛影响。不过，随着黄仁勋复职，这种情况如今看来不太可能发生。\n错综复杂的融资网络\n外界之所以忧虑，是因为英伟达不仅是晶片供应商，也是许多企业的重要资金来源。在跻身人工智能产业龙头的过程中，英伟达在黄仁勋带领下，透过所谓的“循环融资”，建立起一个错综复杂的交易网络。\n英伟达不仅向Meta、SpaceX及OpenAI等客户出售晶片，还透过提供贷款或直接投资，向这些客户及供应链中的其他企业提供资金。\n这种做法引起部分投资者忧虑，他们担心，如果英伟达停止大举投资，后果会如何。如果投资资金枯竭，供应链中的其他企业会否也削减开支或裁员？这些影响又会否蔓延至整个美国经济？\n这种风险或许正是包括马斯克（Elon Musk），以及热门游戏《堡垒之夜》（Fortnite，又译要塞英雄）开发商Epic Games执行长蒂姆·斯威尼（Tim Sweeney）在内的科技界领袖，呼吁让黄仁勋复职的原因。\n马斯克声称，黄仁勋辞职将导致涉及英伟达技术的“关键交易”告吹。他并与股东及支持者一起，支持一场名为“让黄仁勋回来”（Bring Jensen Back）的运动。\n黄仁勋复职的消息公布后，马斯克发文表示：“这个错误已经得到纠正。”\n“市场喜欢黄仁勋”\n投资平台XTB研究总监凯瑟琳·布鲁克斯（Kathleen Brooks）表示，黄仁勋复职显示他是人工智能产业的“教父”，而且拥有足以改变企业融资格局的地位和影响力。\n她补充说：“黄仁勋是否地球上最有价值的人？他的回归意味着，循环融资和人工智能基础设施的快速扩建很可能会照旧持续，而市场对此非常欢迎。”\n然而，黄仁勋重返英伟达，并不能解决近几周令科技股市场动荡的其他问题。……"
+  },
+  {
+   "tag": "政策",
+   "title": "為何黃仁勳大到不能被解僱？",
+   "src": "https://www.bbc.com/zhongwen/articles/c6qx5eqgg0rwo/simp?at_medium=RSS&at_campaign=rss",
+   "text": "为何黄仁勋大到不能被解雇？\n  - Author, 费萨尔·伊斯兰（Faisal Islam）\n  - Role, BBC经济编辑\n- Published\n- 阅读时间: 3 分钟\n黄仁勋早前承认与涉嫌中国间谍的女子有婚外情，如今却获恢复英伟达（Nvidia，又名辉达）执行长职务。在周一（11月23日）的几个小时内，围绕他的回归，接连出现了三个令人瞠目结舌的时刻。\n首先是这家晶片制造商突然宣布黄仁勋回归，随后英伟达的股票市值增加了1万亿（1兆）美元。\n接着是美国总统特朗普承认了一个显而易见的事实：正是他直接向英伟达董事会发出“你不用被解雇了”的讯息，才令董事会改变决定。\n从英伟达上周的表态，足以看出这次决定逆转的幅度有多大。当时董事会明确表示，黄仁勋不会回归。\n临时管理层也曾暗示，公司将调整部分策略，偏离黄仁勋时代的方向。\n如今，这一切都已被扔进企业历史的垃圾桶。\n单论涉及的金额规模，黄仁勋这次东山再起，甚至超越了山姆·奥特曼（Sam Altman）重返OpenAI，以及史蒂夫·乔布斯（Steve Jobs）重返苹果公司的事例。\n英伟达发出的第一份声明，已相当清楚地揭示了这次决定逆转的原因。美国政府表示，恢复黄仁勋的职务不会引起国家安全方面的疑虑。这种保证只能来自白宫。\n一小时后，特朗普总统透露，他曾直接与英伟达董事会交谈。\n这让我想起去年9月与黄仁勋的一次对话。当时他公开主张，应允许中国取得英伟达的先进晶片。他是全球少数能够令人信服地宣称，自己同时了解特朗普总统和习近平主席想法的人之一。\n美国媒体报道，特朗普政府内部出现分歧。一方是主张限制晶片出口的对华鹰派，另一方则支持黄仁勋的论点。\n目前仍有一项独立调查正在进行，以审查英伟达是否遵守出口管制规定。\n英伟达的晶片对开发最前沿的人工智能系统至关重要。黄仁勋对这条供应链的影响力，意味着他的重要性甚至超越许多世界领导人。\n这次变动不仅对近期涨势乏力的美国科技股热潮具有重大意义，也关乎全球经济的未来、美国政治，当然还有中美之间的地缘政治竞争。\n近期围绕英伟达的疑虑，直击人工智能热潮的核心。毕竟，这家公司确实创造了惊人的实际销售收入：今年超过4000亿美元（3050亿英镑），相比之下，四年前只有270亿美元。\n英伟达从一家为世嘉（Sega）游戏机供应显示卡的公司，发展成为人工智能产业的核心支柱，黄仁勋一直是这段历程的关键人物。\n这意味着一件事：黄仁勋的重要性，已经大到不能被解雇。\n本文原以英文撰写，我们使用了人工智能协助翻译，并由BBC记者在发布前进行审核。了解更多关于我们如何使用人工智能的资讯。……"
   }
  ],
  "srcs": [
-  "https://www.bbc.com/zhongwen/articles/crgj360lnqv6o/simp?at_medium=RSS&at_campaign=rss",
-  "https://www.bbc.com/zhongwen/articles/cmvg2er51z1wo/simp?at_medium=RSS&at_campaign=rss",
-  "https://www.bbc.com/zhongwen/articles/c5n4eylmmg8po/simp?at_medium=RSS&at_campaign=rss",
   "https://www.bbc.com/zhongwen/articles/c63egjy85wq8o/simp?at_medium=RSS&at_campaign=rss",
-  "https://www.bbc.com/zhongwen/articles/cjy5xkw9g1zpo/simp?at_medium=RSS&at_campaign=rss",
-  "https://www.bbc.com/zhongwen/articles/cm36gnenlj59o/simp?at_medium=RSS&at_campaign=rss",
-  "https://www.bbc.com/zhongwen/articles/cqy7rg0yyxxko/simp?at_medium=RSS&at_campaign=rss",
-  "https://www.bbc.com/zhongwen/articles/cwe85gr487dno/simp?at_medium=RSS&at_campaign=rss",
-  "https://www.bbc.com/zhongwen/articles/cm5y120z0pw0o/simp?at_medium=RSS&at_campaign=rss",
-  "https://www.bbc.com/zhongwen/articles/cj93rp9vzeg1o/simp?at_medium=RSS&at_campaign=rss",
-  "https://www.bbc.com/zhongwen/articles/cvglr9r243x6o/simp?at_medium=RSS&at_campaign=rss",
-  "https://www.bbc.com/zhongwen/articles/c64gn9jl5lveo/simp?at_medium=RSS&at_campaign=rss",
-  "https://www.bbc.com/zhongwen/articles/cm3wgp60p952o/simp?at_medium=RSS&at_campaign=rss",
-  "https://www.bbc.com/zhongwen/articles/cmpdwn010nyvo/simp?at_medium=RSS&at_campaign=rss",
-  "https://www.bbc.com/zhongwen/articles/c38x04eppnpdo/simp?at_medium=RSS&at_campaign=rss",
-  "https://www.bbc.com/zhongwen/articles/cwe85djzkkv5o/simp?at_medium=RSS&at_campaign=rss",
-  "https://www.bbc.com/zhongwen/articles/cm0e0e7d7qv4o/simp?at_medium=RSS&at_campaign=rss",
   "https://www.bbc.com/zhongwen/articles/cxq6e216p7ylo/simp?at_medium=RSS&at_campaign=rss",
-  "https://www.bbc.com/zhongwen/articles/c6wy4373q50go/simp?at_medium=RSS&at_campaign=rss",
+  "https://www.bbc.com/zhongwen/articles/c5n4eylmmg8po/simp?at_medium=RSS&at_campaign=rss",
+  "https://www.bbc.com/zhongwen/articles/cmpdwn010nyvo/simp?at_medium=RSS&at_campaign=rss",
+  "https://www.bbc.com/zhongwen/articles/cm36gnenlj59o/simp?at_medium=RSS&at_campaign=rss",
+  "https://www.bbc.com/zhongwen/articles/cm3wgp60p952o/simp?at_medium=RSS&at_campaign=rss",
+  "https://www.bbc.com/zhongwen/articles/cjy5xkw9g1zpo/simp?at_medium=RSS&at_campaign=rss",
+  "https://www.bbc.com/zhongwen/articles/c38x04eppnpdo/simp?at_medium=RSS&at_campaign=rss",
+  "https://www.bbc.com/zhongwen/articles/c6qx5eqgg0rwo/simp?at_medium=RSS&at_campaign=rss",
+  "https://www.bbc.com/zhongwen/articles/cwe85djzkkv5o/simp?at_medium=RSS&at_campaign=rss",
+  "https://www.bbc.com/zhongwen/articles/cvglr9r243x6o/simp?at_medium=RSS&at_campaign=rss",
+  "https://www.bbc.com/zhongwen/articles/cm0e0e7d7qv4o/simp?at_medium=RSS&at_campaign=rss",
+  "https://www.bbc.com/zhongwen/articles/cmn80j39wq06o/simp?at_medium=RSS&at_campaign=rss",
+  "https://www.bbc.com/zhongwen/articles/c64gn9jl5lveo/simp?at_medium=RSS&at_campaign=rss",
+  "https://www.bbc.com/zhongwen/articles/cj93rp9vzeg1o/simp?at_medium=RSS&at_campaign=rss",
+  "https://www.bbc.com/zhongwen/articles/cm5y120z0pw0o/simp?at_medium=RSS&at_campaign=rss",
+  "https://www.bbc.com/zhongwen/articles/cmvg2er51z1wo/simp?at_medium=RSS&at_campaign=rss",
   "https://www.bbc.com/zhongwen/articles/cjn50zq2n7v1o/simp?at_medium=RSS&at_campaign=rss",
+  "https://www.bbc.com/zhongwen/articles/c6wy4373q50go/simp?at_medium=RSS&at_campaign=rss",
+  "https://www.bbc.com/zhongwen/articles/cqy7rg0yyxxko/simp?at_medium=RSS&at_campaign=rss",
+  "https://www.bbc.com/zhongwen/articles/cvwy0jx7nj84o/simp?at_medium=RSS&at_campaign=rss",
   "https://www.bbc.com/zhongwen/articles/c893rg46x0ygo/simp?at_medium=RSS&at_campaign=rss",
-  "https://www.bbc.com/zhongwen/articles/cmn80j39wq06o/simp?at_medium=RSS&at_campaign=rss"
+  "https://www.bbc.com/zhongwen/articles/crgj360lnqv6o/simp?at_medium=RSS&at_campaign=rss",
+  "https://www.bbc.com/zhongwen/articles/cwe85gr487dno/simp?at_medium=RSS&at_campaign=rss"
  ]
 }
